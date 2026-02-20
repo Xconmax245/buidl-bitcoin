@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "npm run dev --prefix frontend",
     "build": "npm run build --prefix frontend",
+    "vercel-build": "cd frontend && npm install --legacy-peer-deps && npm run build",
     "start": "npm run start --prefix frontend",
     "lint": "npm run lint --prefix frontend",
     "contract:check": "clarinet check",
@@ -27,6 +28,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.18",
+    "next": "16.1.6",
     "tailwindcss": "^4.1.18"
   }
 }
