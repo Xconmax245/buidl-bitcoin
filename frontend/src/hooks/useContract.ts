@@ -1,7 +1,6 @@
 
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState, useEffect } from 'react';
 import { Buffer } from 'buffer';
-import { useConnect } from '@stacks/connect-react';
 import { STACKS_TESTNET, STACKS_MAINNET, STACKS_MOCKNET } from '@stacks/network';
 import {
   AnchorMode,
@@ -20,8 +19,40 @@ import {
 import { useWallet } from '@/providers/WalletProvider';
 import { useNotifications } from '@/providers/NotificationProvider';
 
+// Safe wrapper for useConnect that doesn't crash when ConnectProvider isn't mounted
+const useSafeConnect = () => {
+  const [connectFn, setConnectFn] = useState<any>(null);
+
+  useEffect(() => {
+    // Dynamically import and try to get the connect function
+    import('@stacks/connect-react').then((mod) => {
+      // We can't call hooks dynamically, so we'll use openContractCall directly
+      import('@stacks/connect').then((connectMod) => {
+        setConnectFn(() => connectMod.openContractCall);
+      });
+    }).catch(() => {
+      console.warn('Stacks Connect not available');
+    });
+  }, []);
+
+  const doContractCall = useCallback(async (options: any) => {
+    if (connectFn) {
+      return connectFn(options);
+    }
+    // Fallback: try dynamic import
+    try {
+      const { openContractCall } = await import('@stacks/connect');
+      return openContractCall(options);
+    } catch (err) {
+      console.warn('Contract call not available:', err);
+    }
+  }, [connectFn]);
+
+  return { doContractCall };
+};
+
 export const useContract = () => {
-  const { doContractCall } = useConnect();
+  const { doContractCall } = useSafeConnect();
   const { network: networkMode } = useWallet();
   const { addNotification } = useNotifications();
   
