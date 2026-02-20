@@ -1,36 +1,45 @@
 import { useState, useEffect } from 'react';
-import { userSession } from '@/lib/stacks/client';
-import { showConnect } from '@stacks/connect';
+import { getUserSession } from '@/lib/stacks/client';
 
 export const useStacks = () => {
   const [userData, setUserData] = useState<any>(null);
 
   useEffect(() => {
-    if (userSession.isUserSignedIn()) {
-      setUserData(userSession.loadUserData());
-    } else if (userSession.isSignInPending()) {
-      userSession.handlePendingSignIn().then((data) => {
-        setUserData(data);
-      });
-    }
+    const init = async () => {
+      try {
+        const session = await getUserSession();
+        if (session.isUserSignedIn()) {
+          setUserData(session.loadUserData());
+        } else if (session.isSignInPending()) {
+          const data = await session.handlePendingSignIn();
+          setUserData(data);
+        }
+      } catch (err) {
+        console.error('Failed to initialize Stacks session:', err);
+      }
+    };
+    init();
   }, []);
 
-  const connectWallet = () => {
+  const connectWallet = async () => {
+    const session = await getUserSession();
+    const { showConnect } = await import('@stacks/connect');
     showConnect({
       appDetails: {
-        name: 'Bitcoin Savings Protocol',
+        name: 'Ironclad Protocol',
         icon: '/logo.png',
       },
-      userSession,
+      userSession: session,
       onFinish: () => {
-        setUserData(userSession.loadUserData());
+        setUserData(session.loadUserData());
         window.location.reload();
       },
     });
   };
 
-  const disconnect = () => {
-    userSession.signUserOut();
+  const disconnect = async () => {
+    const session = await getUserSession();
+    session.signUserOut();
     setUserData(null);
   };
 

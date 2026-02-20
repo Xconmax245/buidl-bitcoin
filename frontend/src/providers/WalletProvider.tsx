@@ -3,14 +3,28 @@
 
 import { createContext, useContext, useEffect, useState, useMemo, ReactNode } from "react";
 import { db } from "@/lib/storage/db";
-import { BitcoinWallet, WalletKeys } from "@/lib/bitcoin/wallet";
 import { CryptoService } from "@/lib/security/crypto";
 import { BitcoinClient } from "@/lib/bitcoin/client";
+import type { WalletKeys } from "@/lib/bitcoin/wallet";
 
-import { AppConfig, UserSession, showConnect } from "@stacks/connect";
+// Lazy-load Stacks Connect and BitcoinWallet to avoid SSR/WASM issues
+let _userSession: any = null;
+let _BitcoinWallet: any = null;
 
-export const appConfig = new AppConfig(['store_write', 'publish_data']);
-export const sharedUserSession = new UserSession({ appConfig });
+const getStacksSession = async () => {
+  if (_userSession) return _userSession;
+  const { AppConfig, UserSession } = await import("@stacks/connect");
+  const appConfig = new AppConfig(['store_write', 'publish_data']);
+  _userSession = new UserSession({ appConfig });
+  return _userSession;
+};
+
+const getBitcoinWallet = async () => {
+  if (_BitcoinWallet) return _BitcoinWallet;
+  const mod = await import("@/lib/bitcoin/wallet");
+  _BitcoinWallet = mod.BitcoinWallet;
+  return _BitcoinWallet;
+};
 
 interface WalletState {
   hasWallet: boolean;
@@ -39,7 +53,12 @@ interface WalletContextType extends WalletState {
 const WalletContext = createContext<WalletContextType | null>(null);
 
 export function WalletProvider({ children }: { children: ReactNode }) {
-  const userSession = sharedUserSession;
+  const [userSession, setUserSession] = useState<any>(null);
+
+  // Initialize Stacks session on client
+  useEffect(() => {
+    getStacksSession().then(session => setUserSession(session));
+  }, []);
 
   const [state, setState] = useState<WalletState>({
     hasWallet: false,
@@ -58,10 +77,12 @@ export function WalletProvider({ children }: { children: ReactNode }) {
 
   const checkWallet = async () => {
     try {
-      if (typeof window === 'undefined' || !userSession) {
+      if (typeof window === 'undefined') {
           setState(prev => ({ ...prev, isLoading: false }));
           return;
       }
+
+      const session = await getStacksSession();
 
       // Check settings for profile and network
       const savedName = await db.settings.get('userName');
@@ -84,8 +105,8 @@ export function WalletProvider({ children }: { children: ReactNode }) {
       }
       
       // check stacks
-      if (userSession.isUserSignedIn()) {
-        const userData = userSession.loadUserData();
+      if (session.isUserSignedIn()) {
+        const userData = session.loadUserData();
         const address = userData.profile.stxAddress.testnet || userData.profile.stxAddress.mainnet; 
         setState(prev => ({ 
           ...prev, 
@@ -108,15 +129,17 @@ export function WalletProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  // Check for existing wallet on mount
+  // Check for existing wallet on mount (after session is ready)
   useEffect(() => {
+    if (typeof window === 'undefined') return;
     checkWallet();
-  }, [userSession]);
+  }, []);
 
   // Sync wallet binding to backend
   useEffect(() => {
     const sync = async () => {
-        if (!state.hasWallet && !userSession?.isUserSignedIn()) return;
+        const session = await getStacksSession().catch(() => null);
+        if (!state.hasWallet && !session?.isUserSignedIn()) return;
 
         const payload: any = {};
         
@@ -126,8 +149,8 @@ export function WalletProvider({ children }: { children: ReactNode }) {
         }
 
         // Add Stacks Principal if connected
-        if (userSession?.isUserSignedIn()) {
-            const userData = userSession.loadUserData();
+        if (session?.isUserSignedIn()) {
+            const userData = session.loadUserData();
             const stxAddress = userData.profile.stxAddress.testnet || userData.profile.stxAddress.mainnet;
             payload.stacksPrincipal = stxAddress;
         }
@@ -150,25 +173,28 @@ export function WalletProvider({ children }: { children: ReactNode }) {
     // Debounce slightly or just run
     const timeout = setTimeout(sync, 1000);
     return () => clearTimeout(timeout);
-  }, [state.isUnlocked, keys, userSession, state.hasWallet]);
+  }, [state.isUnlocked, keys, state.hasWallet]);
 
-  const connectStacks = () => {
-    if (!userSession) return;
-    showConnect({
+  const connectStacks = async () => {
+    const session = await getStacksSession();
+    if (!session) return;
+    const { showConnect: sc } = await import("@stacks/connect");
+    sc({
       appDetails: {
         name: 'Ironclad',
         icon: window.location.origin + '/icon.png',
       },
       redirectTo: '/onboarding',
       onFinish: () => {
-        window.location.reload(); // Refresh to catch session
+        window.location.reload();
       },
-      userSession,
+      userSession: session,
     });
   };
 
-  const disconnectStacks = () => {
-    if (userSession) userSession.signUserOut();
+  const disconnectStacks = async () => {
+    const session = await getStacksSession().catch(() => null);
+    if (session) session.signUserOut();
     setState({
       hasWallet: false,
       isUnlocked: false,
@@ -196,7 +222,8 @@ export function WalletProvider({ children }: { children: ReactNode }) {
   const createWallet = async (password: string, name?: string): Promise<string> => {
     try {
       setState(prev => ({ ...prev, isLoading: true }));
-      const mnemonic = BitcoinWallet.generateMnemonic();
+      const BW = await getBitcoinWallet();
+      const mnemonic = BW.generateMnemonic();
       
       const salt = CryptoService.generateSalt();
       const key = await CryptoService.deriveKey(password, salt);
@@ -222,7 +249,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
       }
 
       // Unlock immediately
-      const walletKeys = BitcoinWallet.fromMnemonic(mnemonic);
+      const walletKeys = BW.fromMnemonic(mnemonic);
       setKeys(walletKeys);
       
       setState(prev => ({ 
@@ -246,7 +273,8 @@ export function WalletProvider({ children }: { children: ReactNode }) {
 
   const restoreWallet = async (mnemonic: string, password: string, name?: string) => {
     try {
-      if (!BitcoinWallet.validateMnemonic(mnemonic)) {
+      const BW = await getBitcoinWallet();
+      if (!BW.validateMnemonic(mnemonic)) {
         throw new Error("Invalid mnemonic phrase");
       }
 
@@ -274,7 +302,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
         await db.settings.put({ key: 'userName', value: name });
       }
 
-      const walletKeys = BitcoinWallet.fromMnemonic(mnemonic);
+      const walletKeys = BW.fromMnemonic(mnemonic);
       setKeys(walletKeys);
       
       setState(prev => ({ 
@@ -312,12 +340,13 @@ export function WalletProvider({ children }: { children: ReactNode }) {
         const key = await CryptoService.deriveKey(password, new Uint8Array(salt));
         const mnemonic = await CryptoService.decrypt(cyphertext, key, new Uint8Array(iv));
         
-        if (!BitcoinWallet.validateMnemonic(mnemonic)) {
+        const BW = await getBitcoinWallet();
+        if (!BW.validateMnemonic(mnemonic)) {
            throw new Error("Invalid mnemonic after decryption");
         }
         
         // Derive keys
-        const walletKeys = BitcoinWallet.fromMnemonic(mnemonic); 
+        const walletKeys = BW.fromMnemonic(mnemonic); 
         setKeys(walletKeys);
 
         // Fetch balance
