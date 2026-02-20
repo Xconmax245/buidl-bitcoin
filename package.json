@@ -1,0 +1,32 @@
+{
+  "name": "bitcoin-savings-protocol",
+  "version": "1.0.0",
+  "description": "Programmable Bitcoin Savings Protocol",
+  "scripts": {
+    "dev": "npm run dev --prefix frontend",
+    "build": "npm run build --prefix frontend",
+    "start": "npm run start --prefix frontend",
+    "lint": "npm run lint --prefix frontend",
+    "contract:check": "clarinet check",
+    "contract:test": "clarinet test"
+  },
+  "keywords": [
+    "bitcoin",
+    "stacks",
+    "sbtc",
+    "nextjs",
+    "savings"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@stacks/common": "^7.3.1",
+    "@stacks/network": "^7.3.1",
+    "@stacks/transactions": "^7.3.1",
+    "dotenv": "^17.3.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.18",
+    "tailwindcss": "^4.1.18"
+  }
+}

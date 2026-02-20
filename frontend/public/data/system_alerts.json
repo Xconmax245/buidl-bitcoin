@@ -1,0 +1,23 @@
+[
+  {
+    "id": "sys-001",
+    "type": "info",
+    "title": "Protocol Upgrade v1.2",
+    "message": "Ironclad protocol verification logic has been upgraded to support Taproot inputs. No action required.",
+    "priority": "high"
+  },
+  {
+    "id": "sys-002",
+    "type": "success",
+    "title": "Network Optimal",
+    "message": "Bitcoin mempool density is currently low. Transaction fees are optimized for savings plan creation.",
+     "priority": "low"
+  },
+  {
+    "id": "sys-003",
+    "type": "info",
+    "title": "New Feature: AI Insights",
+    "message": "We've integrated real-time AI-powered insights into your dashboard. Check the new analytics tab.",
+    "priority": "medium"
+  }
+]

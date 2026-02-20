@@ -1,0 +1,20 @@
+[network]
+name = "devnet"
+stacks_node_rpc_address = "http://localhost:3999"
+bitcoin_node_rpc_address = "http://localhost:18443"
+postgres_uri = "postgresql://postgres@localhost:5432/postgres"
+
+[[accounts]]
+name = "deployer"
+address = "ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM"
+balance = 100000000000000
+
+[[accounts]]
+name = "wallet_1"
+address = "ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5"
+balance = 1000000000000
+
+[[accounts]]
+name = "wallet_2"
+address = "ST2CY5V39NHDPWSXMW9QDT3HC3GD6Q6XX4CFRK9AG"
+balance = 1000000000000

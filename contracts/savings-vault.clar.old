@@ -1,0 +1,140 @@
+;; savings-vault.clar
+;; Non-custodial Bitcoin Savings Protocol
+;; Coordinates savings behavior without holding private keys
+
+;; Constants
+(define-constant ERR_UNAUTHORIZED (err u100))
+(define-constant ERR_INVALID_AMOUNT (err u101))
+(define-constant ERR_ALREADY_REGISTERED (err u102))
+(define-constant ERR_USER_NOT_FOUND (err u103))
+(define-constant ERR_PLAN_EXISTS (err u104))
+(define-constant ERR_PLAN_NOT_FOUND (err u105))
+(define-constant ERR_ALREADY_COMPLETED (err u106))
+(define-constant ERR_LOCK_NOT_EXPIRED (err u107))
+(define-constant ERR_TARGET_NOT_MET (err u108))
+
+;; Data Vars
+(define-data-var oracle-address principal tx-sender)
+
+;; Data Maps
+(define-map user-registrations
+  principal
+  {
+    btc-address: (buff 64), ;; Supports SegWit/Taproot
+    registered-at: uint
+  }
+)
+
+(define-map user-plans
+  principal
+  {
+    target-amount: uint,    ;; In Satoshis
+    start-block: uint,      ;; Stacks block height
+    lock-duration: uint,    ;; In blocks
+    completed: bool,
+    last-verified-balance: uint
+  }
+)
+
+;; Admin Functions
+(define-public (set-oracle (new-oracle principal))
+  (begin
+    (asserts! (is-eq tx-sender (var-get oracle-address)) ERR_UNAUTHORIZED)
+    (ok (var-set oracle-address new-oracle))
+  )
+)
+
+;; Public Functions
+
+;; 1. Register User
+;; Links Stacks principal to Bitcoin address
+(define-public (register-user (btc-address (buff 64)))
+  (let (
+    (existing-user (map-get? user-registrations tx-sender))
+  )
+    (asserts! (is-none existing-user) ERR_ALREADY_REGISTERED)
+    (ok (map-set user-registrations tx-sender {
+      btc-address: btc-address,
+      registered-at: block-height
+    }))
+  )
+)
+
+;; 2. Create Plan
+;; Sets a savings target and time lock
+(define-public (create-plan (target-amount uint) (lock-duration uint))
+  (let (
+    (registration (unwrap! (map-get? user-registrations tx-sender) ERR_USER_NOT_FOUND))
+    (existing-plan (map-get? user-plans tx-sender))
+  )
+    (asserts! (> target-amount u0) ERR_INVALID_AMOUNT)
+    (asserts! (> lock-duration u0) ERR_INVALID_AMOUNT)
+    ;; For now, limit to one plan per user to verify logic. 
+    (asserts! (is-none existing-plan) ERR_PLAN_EXISTS)
+
+    (ok (map-set user-plans tx-sender {
+      target-amount: target-amount,
+      start-block: block-height,
+      lock-duration: lock-duration,
+      completed: false,
+      last-verified-balance: u0
+    }))
+  )
+)
+
+;; 3. Verify Completion
+;; Called by trusted oracle (Backend) after verifying BTC state
+(define-public (verify-completion (user principal) (current-balance uint))
+  (let (
+    (plan (unwrap! (map-get? user-plans user) ERR_PLAN_NOT_FOUND))
+    (target (get target-amount plan))
+    (start (get start-block plan))
+    (duration (get lock-duration plan))
+  )
+    ;; Only Oracle can verify
+    (asserts! (is-eq tx-sender (var-get oracle-address)) ERR_UNAUTHORIZED)
+    (asserts! (not (get completed plan)) ERR_ALREADY_COMPLETED)
+    
+    ;; 1. Time Check
+    (asserts! (>= block-height (+ start duration)) ERR_LOCK_NOT_EXPIRED)
+
+    ;; 2. Balance Check
+    (asserts! (>= current-balance target) ERR_TARGET_NOT_MET)
+
+    ;; Mark complete
+    (ok (map-set user-plans user (merge plan {
+      completed: true,
+      last-verified-balance: current-balance
+    })))
+  )
+)
+
+;; 4. Unlock sBTC (Optional)
+;; Transfers locked sBTC back to user if plan is completed
+(define-public (unlock)
+  (let (
+    (plan (unwrap! (map-get? user-plans tx-sender) ERR_PLAN_NOT_FOUND))
+  )
+    (asserts! (get completed plan) ERR_LOCK_NOT_EXPIRED)
+    ;; In a real sBTC implementation:
+    ;; (try! (contract-call? 'SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE.sbtc-token transfer ...))
+    (ok true)
+  )
+)
+
+;; Read Only Functions
+
+(define-read-only (get-user-registration (user principal))
+  (map-get? user-registrations user)
+)
+
+(define-read-only (get-user-plan (user principal))
+  (map-get? user-plans user)
+)
+
+(define-read-only (is-plan-completed (user principal))
+  (match (map-get? user-plans user)
+    plan (get completed plan)
+    false
+  )
+)

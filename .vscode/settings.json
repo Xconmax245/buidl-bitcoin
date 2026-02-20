@@ -1,0 +1,10 @@
+{
+  "deno.enable": true,
+  "deno.enablePaths": [
+    "tests"
+  ],
+  "deno.suggest.imports.hosts": {
+    "https://deno.land": true
+  },
+  "css.lint.unknownAtRules": "ignore"
+}

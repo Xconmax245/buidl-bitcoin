@@ -1,0 +1,28 @@
+﻿Clarinet is a command line tool for Clarity smart contract development.
+
+For Clarinet documentation, refer to https://docs.hiro.so/clarinet/introduction. Report any issues here https://github.com/hirosystems/clarinet/issues/new.
+
+Usage: clarinet <COMMAND>
+
+Commands:
+  completions   Generate shell completions scripts
+  new           Create and scaffold a new project
+  contracts     Subcommands for working with contracts
+  requirements  Interact with contracts deployed on Mainnet
+  chainhooks    Subcommands for working with chainhooks (deprecated)
+  deployments   Manage contracts deployments on Simnet/Devnet/Testnet/Mainnet
+  console       Load contracts in a REPL for an interactive session
+  check         Check contracts syntax
+  integrate     Start a local Devnet network for interacting with your contracts from your browser
+  devnet        Subcommands for Devnet usage
+  lsp           Get Clarity autocompletion and inline errors from your code editor (VSCode, vim, emacs, etc)
+  format        Format clarity code files
+  dap           Step by step debugging and breakpoints from your code editor (VSCode, vim, emacs, etc)
+  help          Print this message or the help of the given subcommand(s)
+
+Options:
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -V, --version
+          Print version
