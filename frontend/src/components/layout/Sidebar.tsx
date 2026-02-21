@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import { useWallet } from "@/providers/WalletProvider";
 import { useEffect, useState } from "react";
-import { Menu, X, Home, Lock, Handshake, ShieldCheck, BarChart3, Settings, LogOut, History as HistoryIcon } from "lucide-react";
+import { Menu, X, Home, Lock, Handshake, ShieldCheck, BarChart3, Settings, LogOut, History as HistoryIcon, Zap, Globe, Book } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function Sidebar() {
@@ -33,10 +33,11 @@ export function Sidebar() {
 
   const navItems = [
     { label: "Overview", icon: Home, href: "/dashboard" },
-    { label: "Ledger", icon: HistoryIcon, href: "/ledger", status: 'Draft' },
+    { label: "How It Works", icon: Zap, href: "/how-it-works" },
+    { label: "Philosophy", icon: Globe, href: "/philosophy" },
     { label: "The Vault", icon: Lock, href: "/vault/setup" },
-    { label: "Commitments", icon: Handshake, href: "/commitments" },
-    { label: "Reputation", icon: ShieldCheck, href: "/reputation", status: 'V2' },
+    { label: "Security", icon: ShieldCheck, href: "/security" },
+    { label: "Documentation", icon: Book, href: "/docs" },
   ];
 
   const systemItems = [

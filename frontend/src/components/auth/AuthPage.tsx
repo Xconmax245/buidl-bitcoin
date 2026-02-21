@@ -258,6 +258,14 @@ export default function AuthPage({ onSuccess, hideHeader = false }: AuthPageProp
                 </div>
               )}
 
+              {isUnlockPhase && (
+                <input 
+                  type="hidden" 
+                  {...register('username')} 
+                  value={session?.user?.email || session?.user?.name || 'vault_user'} 
+                />
+              )}
+
               <div className="relative group/input">
                 <div className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-silver group-focus-within/input:text-primary transition-colors">
                   <Lock size={18} />

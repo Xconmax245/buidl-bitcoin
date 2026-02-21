@@ -239,24 +239,24 @@ export default function DashboardPage() {
       <Sidebar />
       
       <main className="flex-1 flex flex-col h-screen overflow-hidden relative pt-16 lg:pt-0">
-        <header className="h-24 flex items-center justify-between px-6 lg:px-10 border-b border-white/5 bg-background-dark/40 backdrop-blur-xl z-10 sticky top-0">
-          <div className="flex items-center gap-4">
-             <div className="p-2.5 lg:p-3 bg-primary/10 rounded-2xl border border-primary/20">
-                <HistoryIcon className="text-primary" size={20} />
+        <header className="h-20 lg:h-24 flex items-center justify-between px-4 lg:px-10 border-b border-white/5 bg-background-dark/40 backdrop-blur-xl z-20 sticky top-0">
+          <div className="flex items-center gap-3 lg:gap-4">
+             <div className="p-2 lg:p-3 bg-primary/10 rounded-2xl border border-primary/20 shrink-0">
+                <HistoryIcon className="text-primary" size={18} />
              </div>
-             <div>
-                <h1 className="text-lg lg:text-2xl font-black text-white uppercase tracking-tighter">Immutable Ledger</h1>
+             <div className="min-w-0">
+                <h1 className="text-sm lg:text-2xl font-black text-white uppercase tracking-tighter truncate">Immutable Ledger</h1>
                 <p className="hidden md:block text-[10px] text-muted-silver uppercase font-bold tracking-[0.2em] mt-0.5">Real-time Protocol Activity_</p>
              </div>
           </div>
           
-          <div className="flex items-center gap-3 lg:gap-4">
-             <div className="relative group flex-1 md:flex-initial">
-                <Search className="absolute left-3 lg:left-4 top-1/2 -translate-y-1/2 text-muted-silver group-focus-within:text-primary transition-colors" size={14} />
+          <div className="flex items-center gap-2 lg:gap-4 ml-2">
+             <div className="relative group hidden sm:block">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-silver group-focus-within:text-primary transition-colors" size={14} />
                 <input 
                   type="text"
                   placeholder="Filter..."
-                  className="bg-white/5 border border-white/10 rounded-xl py-2 lg:py-2.5 pl-10 lg:pl-12 pr-4 lg:pr-6 text-[10px] lg:text-xs font-bold text-white placeholder:text-muted-silver focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-all w-28 md:w-[350px]"
+                  className="bg-white/5 border border-white/10 rounded-xl py-2.5 pl-12 pr-6 text-xs font-bold text-white focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all w-[250px] lg:w-[350px]"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -268,16 +268,9 @@ export default function DashboardPage() {
              >
                <RefreshCcw size={18} />
              </button>
-             <NotificationsModal />
-             <button 
-               onClick={toggleOpen}
-               className="relative p-2.5 glass-panel rounded-xl text-muted-silver hover:text-white transition-all group"
-             >
-               <Bell size={20} className="group-hover:scale-110 transition-transform" />
-               {unreadCount > 0 && (
-                 <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 rounded-full border-2 border-background-dark shadow-lg" />
-               )}
-             </button>
+             <div className="hidden sm:block">
+                <NotificationsModal />
+             </div>
           </div>
         </header>
 
@@ -302,7 +295,6 @@ export default function DashboardPage() {
             {/* Top Grid: Balance & Quick Stats */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                {/* Balance Card */}
-               {/* Balance Card - Amped with GlassSurface */}
                <motion.div 
                  initial={{ opacity: 0, y: 20 }}
                  animate={{ opacity: 1, y: 0 }}
@@ -402,7 +394,6 @@ export default function DashboardPage() {
                 </motion.div>
             </div>
 
-            {/* Plan Progress Section */}
             {/* Vault Matrix Section */}
             <div className="space-y-6">
               <div className="flex items-center justify-between">
@@ -551,85 +542,73 @@ export default function DashboardPage() {
                     {filteredLedger.length > 0 ? (
                       <table className="w-full table-auto text-left">
                        <thead>
-                          <tr className="border-b border-white/5 bg-white/2">
-                             <th className="px-6 lg:px-10 py-4 lg:py-6 text-[10px] lg:text-[11px] font-black text-muted-silver uppercase tracking-[0.2em]">Hash / Auth</th>
-                             <th className="px-6 lg:px-10 py-4 lg:py-6 text-[10px] lg:text-[11px] font-black text-muted-silver uppercase tracking-[0.2em]">Protocol Intent</th>
-                             <th className="px-6 lg:px-10 py-4 lg:py-6 text-[10px] lg:text-[11px] font-black text-muted-silver uppercase tracking-[0.2em]">Asset Volume</th>
-                             <th className="hidden lg:table-cell px-10 py-6 text-[11px] font-black text-muted-silver uppercase tracking-[0.2em]">L1 Status</th>
-                             <th className="px-6 lg:px-10 py-4 lg:py-6 text-[10px] lg:text-[11px] font-black text-muted-silver uppercase tracking-[0.2em]">Verification</th>
-                          </tr>
-                       </thead>
-                       <tbody className="divide-y divide-white/5">
-                          <AnimatePresence mode="popLayout">
-                            {filteredLedger.map((tx, idx) => (
-                               <motion.tr 
-                                 initial={{ opacity: 0, x: -20 }}
-                                 animate={{ opacity: 1, x: 0 }}
-                                 transition={{ delay: Math.min(idx * 0.015, 0.5) }}
-                                 key={tx.id} 
-                                 className="hover:bg-white/3 transition-colors group cursor-default"
-                               >
-                                  <td className="px-6 lg:px-10 py-6 lg:py-8">
-                                     <div className="flex items-center gap-3 lg:gap-5">
-                                        <div className={`hidden sm:flex w-10 h-10 lg:w-12 lg:h-12 rounded-xl lg:rounded-2xl items-center justify-center border transition-all shadow-lg ${
-                                          tx.type === 'PEER_TRANSFER' ? 'bg-primary/20 border-primary/30 text-primary shadow-primary/10' :
-                                          tx.type === 'PROTOCOL_INTEGRATION' ? 'bg-white/10 border-white/20 text-white shadow-white/5' :
-                                          'bg-white/5 border-white/10 text-muted-silver'
-                                        }`}>
-                                          {tx.type === 'PEER_TRANSFER' ? <ArrowDownLeft size={18} /> : 
-                                           tx.type === 'PROTOCOL_INTEGRATION' ? <Zap size={18} /> : <Activity size={18} />}
-                                        </div>
-                                        <div>
-                                           <div className="flex items-center gap-2">
-                                              <p className="text-[12px] lg:text-sm font-black text-white font-mono tracking-tight group-hover:text-primary transition-colors">{tx.hash}</p>
-                                           </div>
-                                           <div className="hidden md:flex items-center gap-2 mt-1.5 grayscale group-hover:grayscale-0 transition-all opacity-40 group-hover:opacity-100">
-                                              <span className="text-[9px] text-muted-silver font-black uppercase tracking-widest">Auth:</span>
-                                              <span className="text-[9px] text-muted-silver font-mono">{tx.sender?.slice(0, 16) || "Protocol_Managed"}...</span>
-                                           </div>
-                                        </div>
-                                     </div>
-                                  </td>
-                                  <td className="px-6 lg:px-10 py-6 lg:py-8">
-                                     <span className="text-[9px] lg:text-[10px] font-black bg-white/5 px-3 lg:px-4 py-1.5 lg:py-2 rounded-lg lg:rounded-xl text-white border border-white/10 uppercase tracking-widest group-hover:border-primary/40 transition-all whitespace-nowrap">
-                                        {tx.type.replace('_', ' ')}
-                                     </span>
-                                  </td>
-                                  <td className="px-6 lg:px-10 py-6 lg:py-8 min-w-0">
-                                     <div className="max-w-[150px] sm:max-w-none">
-                                        <p className={`text-sm lg:text-lg font-black font-mono tracking-tighter truncate ${tx.amount > 0 ? "text-primary" : "text-white"}`}>
-                                           {tx.amount > 0 ? `+${(tx.amount || 0).toLocaleString(undefined, { minimumFractionDigits: (tx.amount || 0) < 0.1 ? 6 : 2 })}` : (tx.amount || 0).toFixed(4)}
-                                           <span className="text-[9px] lg:text-[10px] ml-1 lg:ml-2 font-black text-muted-silver uppercase shrink-0">{tx.token}</span>
-                                        </p>
-                                        <div className="hidden sm:flex items-center gap-1.5 mt-1 min-w-0">
-                                           <div className="w-1 h-1 rounded-full bg-muted-silver/30 shrink-0" />
-                                           <p className="text-[9px] text-muted-silver/60 font-bold uppercase tracking-widest whitespace-nowrap truncate">Fee: {(tx.fee || 0).toFixed(6)} STX</p>
-                                        </div>
-                                     </div>
-                                  </td>
-                                  <td className="hidden lg:table-cell px-10 py-8">
-                                     <div className="flex items-center gap-3">
-                                        <span className={`w-2 h-2 rounded-full ${tx.status === 'CONFIRMED' ? 'bg-primary shadow-[0_0_12px_rgba(169,208,195,0.7)]' : 'bg-muted-silver/30 animate-pulse'}`} />
-                                        <span className={`text-[10px] font-black uppercase tracking-[0.2em] ${tx.status === 'CONFIRMED' ? 'text-primary' : 'text-muted-silver'}`}>
-                                           {tx.status}
-                                        </span>
-                                     </div>
-                                  </td>
-                                  <td className="px-6 lg:px-10 py-6 lg:py-8">
-                                     <a 
-                                       href={`https://explorer.hiro.so/txid/${tx.id}?chain=${isMainnet ? 'mainnet' : 'testnet'}`}
-                                       target="_blank"
-                                       rel="noopener noreferrer"
-                                       className="inline-flex items-center gap-2 px-3 lg:px-4 py-2 lg:py-2.5 rounded-lg lg:rounded-xl bg-white/2 border border-white/10 text-[9px] lg:text-[10px] font-black text-muted-silver uppercase tracking-widest hover:text-primary hover:border-primary/30 hover:bg-primary/5 transition-all group/btn"
-                                     >
-                                        <span className="hidden sm:inline">Inspect</span>
-                                        <ArrowUpRight size={14} className="group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
-                                     </a>
-                                  </td>
-                               </motion.tr>
-                            ))}
-                          </AnimatePresence>
-                       </tbody>
+                           <tr className="border-b border-white/5 bg-white/2">
+                              <th className="px-5 md:px-10 py-4 lg:py-6 text-[10px] font-black text-muted-silver uppercase tracking-[0.2em]">Hash / Auth</th>
+                              <th className="hidden sm:table-cell px-6 lg:px-10 py-4 lg:py-6 text-[10px] font-black text-muted-silver uppercase tracking-[0.2em]">Protocol Intent</th>
+                              <th className="px-5 md:px-10 py-4 lg:py-6 text-[10px] font-black text-muted-silver uppercase tracking-[0.2em]">Asset Volume</th>
+                              <th className="hidden lg:table-cell px-10 py-6 text-[10px] font-black text-muted-silver uppercase tracking-[0.2em]">L1 Status</th>
+                              <th className="px-5 md:px-10 py-4 lg:py-6 text-[10px] font-black text-muted-silver uppercase tracking-[0.2em]">Verification</th>
+                           </tr>
+                        </thead>
+                        <tbody className="divide-y divide-white/5">
+                           <AnimatePresence mode="popLayout">
+                             {filteredLedger.map((tx, idx) => (
+                                <motion.tr 
+                                  initial={{ opacity: 0, x: -20 }}
+                                  animate={{ opacity: 1, x: 0 }}
+                                  transition={{ delay: Math.min(idx * 0.015, 0.5) }}
+                                  key={tx.id} 
+                                  className="hover:bg-white/3 transition-colors group cursor-default"
+                                >
+                                   <td className="px-5 md:px-10 py-6 lg:py-8">
+                                      <div className="flex items-center gap-3 lg:gap-5">
+                                         <div className="hidden md:flex w-10 h-10 lg:w-12 lg:h-12 rounded-xl lg:rounded-2xl items-center justify-center border transition-all shadow-lg shrink-0">
+                                           {tx.type === 'PEER_TRANSFER' ? <ArrowDownLeft size={18} /> : 
+                                            tx.type === 'PROTOCOL_INTEGRATION' ? <Zap size={18} /> : <Activity size={18} />}
+                                         </div>
+                                         <div className="min-w-0">
+                                            <div className="flex items-center gap-2">
+                                               <p className="text-[11px] md:text-sm font-black text-white font-mono tracking-tight group-hover:text-primary transition-colors truncate">{tx.hash}</p>
+                                            </div>
+                                         </div>
+                                      </div>
+                                   </td>
+                                   <td className="hidden sm:table-cell px-6 lg:px-10 py-6 lg:py-8">
+                                      <span className="text-[9px] lg:text-[10px] font-black bg-white/5 px-3 lg:px-4 py-1.5 lg:py-2 rounded-lg lg:rounded-xl text-white border border-white/10 uppercase tracking-widest group-hover:border-primary/40 transition-all whitespace-nowrap">
+                                         {tx.type.replace('_', ' ')}
+                                      </span>
+                                   </td>
+                                   <td className="px-5 md:px-10 py-6 lg:py-8">
+                                      <div className="max-w-[120px] md:max-w-none">
+                                         <p className={`text-xs md:text-lg font-black font-mono tracking-tighter truncate ${tx.amount > 0 ? "text-primary" : "text-white"}`}>
+                                            {tx.amount > 0 ? `+${(tx.amount || 0).toFixed(4)}` : (tx.amount || 0).toFixed(4)}
+                                            <span className="text-[8px] md:text-[10px] ml-1 md:ml-2 font-black text-muted-silver uppercase shrink-0">{tx.token}</span>
+                                         </p>
+                                      </div>
+                                   </td>
+                                   <td className="hidden lg:table-cell px-10 py-8">
+                                      <div className="flex items-center gap-3">
+                                         <span className={`w-2 h-2 rounded-full ${tx.status === 'CONFIRMED' ? 'bg-primary shadow-[0_0_12px_rgba(169,208,195,0.7)]' : 'bg-muted-silver/30 animate-pulse'}`} />
+                                         <span className={`text-[10px] font-black uppercase tracking-[0.2em] ${tx.status === 'CONFIRMED' ? 'text-primary' : 'text-muted-silver'}`}>
+                                            {tx.status}
+                                         </span>
+                                      </div>
+                                   </td>
+                                   <td className="px-6 lg:px-10 py-6 lg:py-8">
+                                      <a 
+                                        href={`https://explorer.hiro.so/txid/${tx.id}?chain=${isMainnet ? 'mainnet' : 'testnet'}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-2 px-3 lg:px-4 py-2 lg:py-2.5 rounded-lg lg:rounded-xl bg-white/2 border border-white/10 text-[9px] lg:text-[10px] font-black text-muted-silver uppercase tracking-widest hover:text-primary hover:border-primary/30 hover:bg-primary/5 transition-all group/btn"
+                                      >
+                                         <span className="hidden sm:inline">Inspect</span>
+                                         <ArrowUpRight size={14} className="group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+                                      </a>
+                                   </td>
+                                </motion.tr>
+                             ))}
+                           </AnimatePresence>
+                        </tbody>
                       </table>
                     ) : (
                       <div className="flex-1 flex flex-col items-center justify-center p-20 text-slate-700 space-y-4">

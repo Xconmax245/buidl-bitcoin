@@ -217,17 +217,17 @@ export default function Home() {
       {/* Documentation / Read the Protocol Section */}
       <section className="border-t border-white/5 py-16 sm:py-24 px-4 sm:px-6 bg-white/1">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
+          <div className="text-center mb-12 md:mb-16">
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-medium uppercase tracking-wider mb-6">
               <span className="material-icons text-sm">menu_book</span> Documentation
             </span>
-            <h2 className="text-3xl sm:text-4xl font-tight font-bold text-white mb-4">Read the Protocol</h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-tight font-bold text-white mb-4">Read the Protocol</h2>
+            <p className="text-gray-400 max-w-2xl mx-auto px-4">
               Comprehensive documentation covering architecture, smart contracts, security model, and developer guides.
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 px-2 sm:px-0">
             {[
               { title: "Getting Started", desc: "Quick start guide for creating your first vault and making your first commitment.", href: "/docs", icon: "rocket_launch" },
               { title: "Architecture", desc: "Deep dive into the protocol design, smart contract interactions, and data model.", href: "/docs", icon: "architecture" },
