@@ -33,6 +33,7 @@ export function Sidebar() {
 
   const navItems = [
     { label: "Overview", icon: Home, href: "/dashboard" },
+    { label: "Protocol Ledger", icon: HistoryIcon, href: "/ledger" },
     { label: "How It Works", icon: Zap, href: "/how-it-works" },
     { label: "Philosophy", icon: Globe, href: "/philosophy" },
     { label: "The Vault", icon: Lock, href: "/vault/setup" },
@@ -169,26 +170,31 @@ export function Sidebar() {
       </AnimatePresence>
 
       {/* MOBILE BOTTOM NAVIGATION BAR */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 h-16 bg-background-dark/90 backdrop-blur-xl border-t border-white/5 z-50 flex items-center justify-around px-2">
-        {navItems.map((item) => {
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 h-16 bg-background-dark/95 backdrop-blur-xl border-t border-white/5 z-50 flex items-center justify-around px-2 shadow-[0_-4px_24px_rgba(0,0,0,0.5)]">
+        {[
+          { label: "Home", icon: Home, href: "/dashboard" },
+          { label: "Ledger", icon: HistoryIcon, href: "/ledger" },
+          { label: "Vault", icon: Lock, href: "/vault/setup" },
+          { label: "Security", icon: ShieldCheck, href: "/security" },
+        ].map((item) => {
           const isActive = pathname === item.href;
           return (
             <Link 
               key={item.href}
               href={item.href}
-              className={`flex flex-col items-center gap-1 transition-all ${isActive ? 'text-primary' : 'text-slate-500'}`}
+              className={`flex flex-col items-center gap-1 transition-all flex-1 ${isActive ? 'text-primary' : 'text-slate-500'}`}
             >
-              <item.icon size={20} className={isActive ? 'scale-110' : ''} />
-              <span className="text-[8px] font-black uppercase tracking-widest">{item.label}</span>
+              <item.icon size={18} className={isActive ? 'scale-110 text-primary' : 'opacity-70'} />
+              <span className="text-[7px] font-black uppercase tracking-widest">{item.label}</span>
             </Link>
           );
         })}
         <button 
           onClick={() => setIsMobileMenuOpen(true)}
-          className="flex flex-col items-center gap-1 text-slate-500"
+          className="flex flex-col items-center gap-1 text-slate-500 flex-1"
         >
-          <Menu size={20} />
-          <span className="text-[8px] font-black uppercase tracking-widest">More</span>
+          <Menu size={18} className="opacity-70" />
+          <span className="text-[7px] font-black uppercase tracking-widest">More</span>
         </button>
       </nav>
 
