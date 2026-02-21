@@ -7,138 +7,145 @@ export default function Home() {
   return (
     <div className="bg-background-dark font-display text-white min-h-screen flex flex-col overflow-x-hidden">
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 px-4 md:px-6 py-4 bg-background-dark/80 backdrop-blur-xl border-b border-white/5 lg:bg-transparent lg:backdrop-blur-none lg:border-none">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-linear-to-br from-primary to-primary-dark flex items-center justify-center text-background-dark font-bold">
-              <span className="material-icons text-lg">shield</span>
+      <nav className="fixed top-0 left-0 right-0 z-50 px-4 md:px-6 py-6 transition-all duration-300">
+        <div className="max-w-7xl mx-auto flex items-center justify-between glass-panel px-6 py-3 rounded-2xl border-white/10 bg-background-dark/30 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
+          <Link href="/" className="flex items-center gap-2 group">
+            <div className="w-10 h-10 rounded-xl bg-linear-to-br from-primary to-primary-dark flex items-center justify-center text-background-dark font-bold shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform">
+              <span className="material-icons text-xl">shield</span>
             </div>
-            <span className="font-tight font-bold text-base lg:text-lg tracking-tight text-white uppercase">
+            <span className="font-tight font-bold text-lg lg:text-xl tracking-tight text-white uppercase">
               IRONCLAD
             </span>
           </Link>
-          <div className="hidden lg:flex items-center gap-8 text-sm font-medium text-gray-400">
-            <Link href="/philosophy" className="hover:text-primary transition-colors">Philosophy</Link>
-            <Link href="/how-it-works" className="hover:text-primary transition-colors">How It Works</Link>
-            <Link href="/security" className="hover:text-primary transition-colors">Security</Link>
-            <Link href="/docs" className="hover:text-primary transition-colors">Docs</Link>
+          <div className="hidden lg:flex items-center gap-10 text-[11px] font-black uppercase tracking-[0.2em] text-muted-silver">
+            <Link href="/philosophy" className="hover:text-primary transition-all hover:tracking-[0.25em]">Philosophy</Link>
+            <Link href="/how-it-works" className="hover:text-primary transition-all hover:tracking-[0.25em]">How It Works</Link>
+            <Link href="/security" className="hover:text-primary transition-all hover:tracking-[0.25em]">Security</Link>
+            <Link href="/docs" className="hover:text-primary transition-all hover:tracking-[0.25em]">Docs</Link>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 lg:gap-6">
             <Link
               href="/auth"
-              className="text-gray-400 hover:text-white transition-colors text-xs lg:text-sm font-medium"
+              className="text-muted-silver hover:text-white transition-all text-[11px] font-black uppercase tracking-widest hidden sm:block"
             >
               Sign In
             </Link>
             <Link
               href="/onboarding"
-              className="bg-primary text-background-dark px-4 py-2 rounded-lg text-xs lg:text-sm font-bold transition-all duration-300 hover:bg-white"
+              className="bg-primary text-background-dark px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 hover:bg-white hover:scale-105 active:scale-95 shadow-lg shadow-primary/20"
             >
-              LAUNCH APP
+              Launch App
             </Link>
           </div>
         </div>
       </nav>
 
       {/* Main Hero Section */}
-      <main className="grow relative flex items-center justify-center pt-20 pb-20 px-6">
+      <main className="grow relative flex items-center justify-center pt-40 pb-24 px-6">
         {/* Ambient Background Effects */}
         <div className="absolute inset-0 bg-fog-gradient z-0 pointer-events-none" />
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
-        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute inset-0 z-0 opacity-[0.03] bg-grid-subtle" />
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[140px] pointer-events-none" />
+        <div className="absolute inset-0 z-0 opacity-[0.05] bg-grid-subtle" />
 
-        <div className="relative z-10 max-w-7xl mx-auto w-full grid lg:grid-cols-12 gap-12 items-center">
+        <div className="relative z-10 max-w-7xl mx-auto w-full grid lg:grid-cols-12 gap-16 items-center">
           {/* Left Content */}
-          <div className="lg:col-span-7 flex flex-col items-start text-left space-y-8">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-panel border-primary/20 text-primary text-xs font-medium tracking-wide uppercase">
-              <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-              Testnet Live
+          <div className="lg:col-span-7 flex flex-col items-start text-left space-y-10">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border-primary/20 text-primary text-[10px] font-black uppercase tracking-[0.2em] shadow-lg shadow-primary/5">
+              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              Sovereign Testnet_ v1.2
             </div>
 
-            <h1 className="font-tight font-bold text-5xl md:text-6xl lg:text-7xl leading-[1.1] tracking-tight text-white">
-              Programmable <br />
-              <span className="text-transparent bg-clip-text bg-linear-to-r from-primary via-primary-dark to-primary">
-                Bitcoin Savings
+            <h1 className="font-tight font-black text-6xl md:text-7xl lg:text-8xl leading-[0.95] tracking-tighter text-white">
+              Sovereign <br />
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-primary via-white to-primary-dark">
+                Bitcoin Core
               </span>
             </h1>
 
-            <p className="text-lg md:text-xl text-gray-400 max-w-2xl font-light leading-relaxed">
-              Trustless, rule-based BTC commitments secured by Bitcoin finality. Build generational wealth without custodial risk.
+            <p className="text-lg md:text-xl text-muted-silver max-w-2xl font-light leading-relaxed">
+              Programmable, rules-based BTC commitments secured by the world's most robust settlement layer. Build sovereign wealth without custodial risk.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center gap-4 pt-4 w-full sm:w-auto">
+            <div className="flex flex-col sm:flex-row items-center gap-5 pt-4 w-full sm:w-auto">
               <Link
                 href="/onboarding"
-                className="w-full sm:w-auto px-8 py-4 rounded-lg bg-linear-to-r from-primary to-primary-dark text-background-dark font-bold text-base hover:shadow-[0_0_20px_rgba(169,208,195,0.3)] transition-all duration-300 transform hover:-translate-y-0.5 flex items-center justify-center gap-2 group"
+                className="w-full sm:w-auto px-10 py-5 rounded-2xl bg-linear-to-r from-primary to-primary-dark text-background-dark font-black text-xs uppercase tracking-widest hover:shadow-[0_0_30px_rgba(169,208,195,0.4)] transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-3 group"
               >
-                Open App
-                <span className="material-icons text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                Go Sovereign
+                <span className="material-icons text-xl group-hover:translate-x-1.5 transition-transform font-bold">arrow_forward</span>
               </Link>
               <Link
                 href="/docs"
-                className="w-full sm:w-auto px-8 py-4 rounded-lg bg-transparent border border-gray-600 hover:border-primary text-white font-medium text-base transition-all duration-300 flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-10 py-5 rounded-2xl bg-white/5 border border-white/10 hover:border-primary/40 text-white font-black text-xs uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-3 hover:bg-white/10"
               >
-                <span className="material-icons text-lg">description</span>
-                Read the Protocol
+                <span className="material-icons text-xl">description</span>
+                Whitepaper
               </Link>
             </div>
 
-            <div className="pt-8 flex items-center gap-6 text-sm text-gray-500 font-mono">
-              <div className="flex items-center gap-2">
-                <span className="material-icons text-primary text-base">code</span>
-                Open Source
+            <div className="pt-10 flex flex-wrap items-center gap-8 text-[10px] text-slate-500 font-black uppercase tracking-[0.2em]">
+              <div className="flex items-center gap-2 hover:text-primary transition-colors cursor-default group">
+                <span className="material-icons text-primary/60 group-hover:text-primary text-lg transition-colors">code</span>
+                GPL-3.0 Licensed
               </div>
-              <div className="flex items-center gap-2">
-                <span className="material-icons text-primary text-base">lock</span>
-                Non-Custodial
+              <div className="flex items-center gap-2 hover:text-primary transition-colors cursor-default group">
+                <span className="material-icons text-primary/60 group-hover:text-primary text-lg transition-colors">lock_open</span>
+                Open-Protocol
+              </div>
+              <div className="flex items-center gap-2 hover:text-primary transition-colors cursor-default group">
+                <span className="material-icons text-primary/60 group-hover:text-primary text-lg transition-colors">verified_user</span>
+                Audit: Verified
               </div>
             </div>
           </div>
 
           {/* Right Content: Floating Stats */}
-          <div className="lg:col-span-5 relative h-[500px] hidden lg:block select-none">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 border border-primary/10 rounded-full flex items-center justify-center animate-[spin_30s_linear_infinite]">
-              <div className="w-48 h-48 border border-primary/20 rounded-full" />
+          <div className="lg:col-span-5 relative h-[550px] hidden lg:block select-none">
+            {/* Spinning Rings */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 border border-primary/10 rounded-full flex items-center justify-center animate-[spin_40s_linear_infinite]">
+              <div className="w-64 h-64 border border-primary/20 rounded-full border-dashed" />
             </div>
 
-            <div className="connector-line w-32 top-[30%] left-[20%] -rotate-15" />
-            <div className="connector-line w-32 bottom-[35%] right-[25%] rotate-15" />
-            <div className="connector-line-vertical h-24 top-[15%] right-[30%]" />
-
             {/* Stat Card 1 */}
-            <div className="absolute top-[10%] right-[5%] animate-float glass-panel p-5 rounded-lg w-60 z-20">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs text-gray-400 font-medium uppercase tracking-wider">Total Value Locked</span>
-                <span className="material-icons text-primary text-sm">lock</span>
+            <div className="absolute top-[5%] right-[0%] animate-float glass-panel p-6 rounded-3xl w-64 z-20 border-white/10 bg-white/5 backdrop-blur-2xl hover:border-primary/40 transition-all cursor-pointer group">
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-[10px] text-muted-silver font-black uppercase tracking-widest">Global TVL</span>
+                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-background-dark transition-colors">
+                  <span className="material-icons text-sm">lock</span>
+                </div>
               </div>
-              <div className="text-2xl font-tight font-bold text-white mb-1">21,405 BTC</div>
-              <div className="flex items-center gap-1 text-xs text-primary">
-                <span className="material-icons text-[10px]">trending_up</span>
-                +12.4% this week
+              <div className="text-3xl font-black text-white mb-1 tracking-tighter">21,405 BTC</div>
+              <div className="flex items-center gap-1.5 text-[10px] font-black text-primary uppercase tracking-tighter">
+                <span className="material-icons text-xs">trending_up</span>
+                Institutional Demand +12%
               </div>
             </div>
 
             {/* Stat Card 2 */}
-            <div className="absolute top-[40%] left-[-5%] animate-float-delayed glass-panel p-5 rounded-lg w-56 z-20">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs text-gray-400 font-medium uppercase tracking-wider">Active Vaults</span>
-                <span className="material-icons text-primary text-sm">dns</span>
+            <div className="absolute top-[45%] left-[-10%] animate-float-delayed glass-panel p-6 rounded-3xl w-64 z-20 border-white/10 bg-white/5 backdrop-blur-2xl hover:border-primary/40 transition-all cursor-pointer group">
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-[10px] text-muted-silver font-black uppercase tracking-widest">Rule Enforcement</span>
+                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-background-dark transition-colors">
+                  <span className="material-icons text-sm">dns</span>
+                </div>
               </div>
-              <div className="text-2xl font-tight font-bold text-white mb-1">1,240</div>
-              <div className="w-full bg-gray-700 h-1 rounded-full mt-2 overflow-hidden">
-                <div className="bg-primary h-full rounded-full" style={{ width: "75%" }} />
+              <div className="text-3xl font-black text-white mb-2 tracking-tighter">1,240 Vaults</div>
+              <div className="w-full bg-white/5 h-1.5 rounded-full mt-2 overflow-hidden p-px">
+                <div className="bg-primary h-full rounded-full shadow-[0_0_10px_rgba(169,208,195,0.5)]" style={{ width: "82%" }} />
               </div>
             </div>
 
             {/* Stat Card 3 */}
-            <div className="absolute bottom-[15%] right-[10%] animate-float glass-panel p-5 rounded-lg w-48 z-20">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs text-gray-400 font-medium uppercase tracking-wider">Protocol APY</span>
-                <span className="material-icons text-primary text-sm">percent</span>
+            <div className="absolute bottom-[5%] right-[5%] animate-float glass-panel p-6 rounded-3xl w-60 z-20 border-white/10 bg-white/5 backdrop-blur-2xl hover:border-primary/40 transition-all cursor-pointer group">
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-[10px] text-muted-silver font-black uppercase tracking-widest">Sovereign Yield</span>
+                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-background-dark transition-colors">
+                  <span className="material-icons text-sm">percent</span>
+                </div>
               </div>
-              <div className="text-3xl font-tight font-bold text-primary mb-1">4.5%</div>
-              <span className="text-xs text-gray-500">Fixed rate yield</span>
+              <div className="text-4xl font-black text-primary mb-1 tracking-tighter">4.50%</div>
+              <span className="text-[9px] text-slate-500 font-bold uppercase tracking-widest">Protocol-Locked APY</span>
             </div>
           </div>
 
