@@ -251,22 +251,41 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Careers / Join Us CTA */}
-      <section className="border-t border-white/5 py-16 sm:py-20 px-4 sm:px-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="glass-panel p-8 sm:p-12 rounded-3xl border border-primary/20 bg-primary/3 text-center relative overflow-hidden">
-            <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-primary/40 to-transparent" />
-            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest mb-6">
-              <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" /> We're Hiring
+      {/* Community / Stay Connected CTA */}
+      <section className="border-t border-white/5 py-16 sm:py-24 px-4 sm:px-6">
+        <div className="max-w-5xl mx-auto">
+          <div className="glass-panel p-10 md:p-16 rounded-[3rem] border-white/5 bg-linear-to-br from-primary/5 via-transparent to-transparent text-center relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[100px] -mr-32 -mt-32 pointer-events-none" />
+            
+            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-[0.2em] mb-8">
+              Protocol Governance
             </span>
-            <h2 className="text-2xl sm:text-3xl font-tight font-bold text-white mb-4">Build the Future of Bitcoin Savings</h2>
-            <p className="text-gray-400 mb-8 max-w-xl mx-auto">
-              Join a remote-first team of Bitcoin builders, smart contract engineers, and security researchers.
+            
+            <h2 className="text-3xl md:text-5xl font-tight font-black text-white mb-6 uppercase tracking-tighter">
+              Join the Network <br />
+              <span className="text-primary italic">Sovereign Community</span>
+            </h2>
+            
+            <p className="text-lg text-muted-silver mb-10 max-w-2xl mx-auto font-light leading-relaxed">
+              Participate in protocol upgrades, vote on parameter changes, and build your resilience reputation alongside a global collective of Bitcoiners.
             </p>
-            <Link href="/careers" className="inline-flex items-center gap-2 px-8 py-4 rounded-lg bg-primary text-background-dark font-bold transition-all hover:bg-white">
-              View Open Positions
-              <span className="material-icons text-lg">arrow_forward</span>
-            </Link>
+            
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link 
+                href="https://twitter.com/ironcladfinance" 
+                target="_blank"
+                className="px-10 py-5 rounded-2xl bg-white text-background-dark font-black text-xs uppercase tracking-widest hover:bg-primary transition-all shadow-xl shadow-white/5 flex items-center gap-3 active:scale-95"
+              >
+                Follow Updates
+                <span className="material-icons text-xl">ios_share</span>
+              </Link>
+              <Link 
+                href="/docs" 
+                className="px-10 py-5 rounded-2xl bg-white/5 border border-white/10 text-white font-black text-xs uppercase tracking-widest hover:bg-white/10 transition-all flex items-center gap-3 active:scale-95"
+              >
+                Read Manifesto
+              </Link>
+            </div>
           </div>
         </div>
       </section>
