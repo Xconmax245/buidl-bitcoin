@@ -129,8 +129,41 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
+    async signIn({ user, account }) {
+      // For Google users, ensure they have a profile entry
+      if (account?.provider === 'google' && user?.id) {
+        try {
+          const existingProfile = await prisma.profile.findUnique({
+            where: { userId: user.id }
+          });
+          if (!existingProfile) {
+            // Create a minimal profile so onboarding shows ProfileSetupModal
+            // but profile check returns false (no country/timezone)
+            const username = `user_${user.id.slice(0, 8)}`;
+            await prisma.profile.create({
+              data: {
+                userId: user.id,
+                username,
+                displayName: user.name || undefined,
+                avatarUrl: user.image || undefined,
+              }
+            }).catch(() => {
+              // Profile creation might fail if username already exists, which is fine
+              console.log("Profile auto-creation skipped (may already exist)");
+            });
+          }
+          // Update auth provider to GOOGLE
+          await prisma.user.update({
+            where: { id: user.id },
+            data: { authProvider: 'GOOGLE' }
+          }).catch(() => {});
+        } catch (err) {
+          console.error("Error in signIn callback for Google:", err);
+        }
+      }
+      return true; // Allow sign in
+    },
     async session({ session, token }: any) {
-      console.log("Session callback for user:", session?.user?.email);
       if (token.id && session.user) {
         session.user.id = token.id;
       } else if (token.sub && session.user) {
@@ -146,6 +179,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         if (user.image) token.picture = user.image;
         if (user.name) token.name = user.name;
       }
+      // For adapter-based OAuth (Google), user.id might be in sub
+      if (account?.provider === 'google' && !token.id) {
+        token.id = token.sub;
+      }
       return token;
     },
   },
@@ -158,5 +195,5 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
   secret: process.env.AUTH_SECRET,
   trustHost: true,
-  debug: true,
+  debug: process.env.NODE_ENV === 'development',
 });

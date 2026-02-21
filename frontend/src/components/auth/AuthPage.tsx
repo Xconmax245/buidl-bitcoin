@@ -369,13 +369,7 @@ export default function AuthPage({ onSuccess, hideHeader = false }: AuthPageProp
               <div className="grid grid-cols-2 gap-4">
                 <button 
                   type="button"
-                  onClick={() => {
-                    if (process.env.NEXT_PUBLIC_AUTH_GOOGLE_ID?.includes('dummy')) {
-                      setError('Google OAuth requires real credentials in .env. Use Demo Access for testing.');
-                    } else {
-                      handleOAuth('google');
-                    }
-                  }}
+                  onClick={() => handleOAuth('google')}
                   className="flex items-center justify-center gap-3 bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all rounded-2xl py-4 text-sm font-bold text-white group"
                 >
                   <svg width="20" height="20" viewBox="0 0 48 48">
