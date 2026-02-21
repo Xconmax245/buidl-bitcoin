@@ -29,6 +29,7 @@ import { useOnboarding } from "@/hooks/useOnboarding";
 import { useWallet } from "@/providers/WalletProvider";
 import { useNotifications } from "@/providers/NotificationProvider";
 import { toast } from "sonner";
+import { COUNTRIES, TIMEZONES, CURRENCIES, LANGUAGES, DEFAULT_AVATARS } from "@/lib/constants";
 
 export default function SettingsPage() {
   const { data: session } = useSession();
@@ -314,6 +315,71 @@ export default function SettingsPage() {
                             className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-5 text-white outline-none focus:border-primary transition-all h-28 resize-none text-sm leading-relaxed"
                             placeholder="Describe your commitment to the protocol..."
                           />
+                        </div>
+
+                        {/* Country */}
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-1 mb-2 block">Country</label>
+                          <select
+                            value={profile.country || ''}
+                            onChange={(e) => setProfile({...profile, country: e.target.value})}
+                            className="w-full bg-[#0c1210] border border-white/10 rounded-2xl py-4 px-5 text-white outline-none focus:border-primary transition-all font-medium appearance-none"
+                          >
+                            <option value="">Select country...</option>
+                            {COUNTRIES.map((c) => (
+                              <option key={c.code} value={c.code}>{c.name}</option>
+                            ))}
+                          </select>
+                        </div>
+
+                        {/* Timezone */}
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-1 mb-2 block">Timezone</label>
+                          <select
+                            value={profile.timezone || ''}
+                            onChange={(e) => setProfile({...profile, timezone: e.target.value})}
+                            className="w-full bg-[#0c1210] border border-white/10 rounded-2xl py-4 px-5 text-white outline-none focus:border-primary transition-all font-medium appearance-none"
+                          >
+                            <option value="">Select timezone...</option>
+                            {TIMEZONES.map((tz) => (
+                              <option key={tz.value} value={tz.value}>{tz.label}</option>
+                            ))}
+                          </select>
+                        </div>
+
+                        {/* Currency */}
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-1 mb-2 block">Display Currency</label>
+                          <div className="flex flex-wrap gap-2">
+                            {CURRENCIES.map((curr) => (
+                              <button
+                                key={curr}
+                                type="button"
+                                onClick={() => setProfile({...profile, preferredCurrency: curr})}
+                                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                                  profile.preferredCurrency === curr
+                                    ? 'bg-primary text-background-dark shadow-md'
+                                    : 'bg-white/5 text-slate-500 hover:text-white border border-white/5'
+                                }`}
+                              >
+                                {curr}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Language */}
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-1 mb-2 block">Language</label>
+                          <select
+                            value={profile.language || 'EN'}
+                            onChange={(e) => setProfile({...profile, language: e.target.value})}
+                            className="w-full bg-[#0c1210] border border-white/10 rounded-2xl py-4 px-5 text-white outline-none focus:border-primary transition-all font-medium appearance-none"
+                          >
+                            {LANGUAGES.map((lang) => (
+                              <option key={lang.code} value={lang.code}>{lang.name}</option>
+                            ))}
+                          </select>
                         </div>
                       </div>
                     </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Footer } from "@/components/layout/Footer";
 
 export default function Home() {
   return (
@@ -24,13 +25,13 @@ export default function Home() {
           </div>
           <div className="flex items-center gap-4">
             <Link
-              href="/dashboard"
+              href="/auth"
               className="text-gray-400 hover:text-white transition-colors text-xs lg:text-sm font-medium"
             >
               Sign In
             </Link>
             <Link
-              href="/dashboard"
+              href="/onboarding"
               className="bg-primary text-background-dark px-4 py-2 rounded-lg text-xs lg:text-sm font-bold transition-all duration-300 hover:bg-white"
             >
               LAUNCH APP
@@ -52,7 +53,7 @@ export default function Home() {
           <div className="lg:col-span-7 flex flex-col items-start text-left space-y-8">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-panel border-primary/20 text-primary text-xs font-medium tracking-wide uppercase">
               <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-              Mainnet Live
+              Testnet Live
             </div>
 
             <h1 className="font-tight font-bold text-5xl md:text-6xl lg:text-7xl leading-[1.1] tracking-tight text-white">
@@ -85,12 +86,12 @@ export default function Home() {
 
             <div className="pt-8 flex items-center gap-6 text-sm text-gray-500 font-mono">
               <div className="flex items-center gap-2">
-                <span className="material-icons text-primary text-base">verified_user</span>
-                Audited by Trail of Bits
-              </div>
-              <div className="flex items-center gap-2">
                 <span className="material-icons text-primary text-base">code</span>
                 Open Source
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="material-icons text-primary text-base">lock</span>
+                Non-Custodial
               </div>
             </div>
           </div>
@@ -155,20 +156,129 @@ export default function Home() {
         </div>
       </main>
 
-      {/* Partners Footer Strip */}
+      {/* Protocol Highlights Section */}
+      <section className="border-t border-white/5 py-16 sm:py-24 px-4 sm:px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-tight font-bold text-white mb-4">How Ironclad Works</h2>
+            <p className="text-gray-400 max-w-2xl mx-auto">A programmable savings protocol built on Bitcoin, powered by Stacks smart contracts.</p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              {
+                icon: "account_balance_wallet",
+                title: "Create Your Vault",
+                desc: "Generate a non-custodial BTC wallet with military-grade local encryption. Your keys never leave your device.",
+              },
+              {
+                icon: "schedule",
+                title: "Set Commitment Rules",
+                desc: "Define time locks, penalty rates, and savings goals. Smart contracts enforce your rules with zero trust required.",
+              },
+              {
+                icon: "trending_up",
+                title: "Build Reputation",
+                desc: "Successfully completing savings builds your on-chain reputation score, unlocking lower fees and higher protocol tiers.",
+              },
+              {
+                icon: "how_to_vote",
+                title: "Community Governance",
+                desc: "Vote on protocol parameters and upgrades. Your reputation score determines your voting power.",
+              },
+              {
+                icon: "analytics",
+                title: "Track & Analyze",
+                desc: "Monitor your savings progress, view analytics dashboards, and track your portfolio performance in real-time.",
+              },
+              {
+                icon: "security",
+                title: "Bitcoin Security",
+                desc: "All funds are secured by Bitcoin's finality. Stacks smart contracts settle on Bitcoin Layer 1 for ultimate security.",
+              },
+            ].map((feature, i) => (
+              <div key={i} className="glass-panel p-6 rounded-2xl border border-white/5 hover:border-primary/20 transition-all group">
+                <span className="material-icons text-primary text-3xl mb-4 block group-hover:scale-110 transition-transform">{feature.icon}</span>
+                <h3 className="text-lg font-bold text-white mb-2">{feature.title}</h3>
+                <p className="text-gray-400 text-sm leading-relaxed">{feature.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <Link href="/how-it-works" className="inline-flex items-center gap-2 text-primary font-bold hover:underline">
+              Learn more about the protocol
+              <span className="material-icons text-lg">arrow_forward</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Documentation / Read the Protocol Section */}
+      <section className="border-t border-white/5 py-16 sm:py-24 px-4 sm:px-6 bg-white/1">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-medium uppercase tracking-wider mb-6">
+              <span className="material-icons text-sm">menu_book</span> Documentation
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-tight font-bold text-white mb-4">Read the Protocol</h2>
+            <p className="text-gray-400 max-w-2xl mx-auto">
+              Comprehensive documentation covering architecture, smart contracts, security model, and developer guides.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              { title: "Getting Started", desc: "Quick start guide for creating your first vault and making your first commitment.", href: "/docs", icon: "rocket_launch" },
+              { title: "Architecture", desc: "Deep dive into the protocol design, smart contract interactions, and data model.", href: "/docs", icon: "architecture" },
+              { title: "Security Model", desc: "Learn about local encryption, key management, and the non-custodial design.", href: "/security", icon: "shield" },
+              { title: "API Reference", desc: "Smart contract function signatures, parameters, and usage examples.", href: "/docs", icon: "api" },
+            ].map((doc, i) => (
+              <Link key={i} href={doc.href} className="glass-panel p-6 rounded-2xl border border-white/5 hover:border-primary/30 transition-all group block">
+                <span className="material-icons text-primary text-2xl mb-4 block">{doc.icon}</span>
+                <h3 className="text-base font-bold text-white mb-2 group-hover:text-primary transition-colors">{doc.title}</h3>
+                <p className="text-gray-500 text-sm leading-relaxed">{doc.desc}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Careers / Join Us CTA */}
+      <section className="border-t border-white/5 py-16 sm:py-20 px-4 sm:px-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="glass-panel p-8 sm:p-12 rounded-3xl border border-primary/20 bg-primary/3 text-center relative overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-primary/40 to-transparent" />
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest mb-6">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" /> We're Hiring
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-tight font-bold text-white mb-4">Build the Future of Bitcoin Savings</h2>
+            <p className="text-gray-400 mb-8 max-w-xl mx-auto">
+              Join a remote-first team of Bitcoin builders, smart contract engineers, and security researchers.
+            </p>
+            <Link href="/careers" className="inline-flex items-center gap-2 px-8 py-4 rounded-lg bg-primary text-background-dark font-bold transition-all hover:bg-white">
+              View Open Positions
+              <span className="material-icons text-lg">arrow_forward</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Partners Strip */}
       <div className="border-t border-gray-800 bg-background-dark/50 backdrop-blur-sm py-8">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
-          <span className="text-sm text-gray-500 font-medium">Trusted by institutions worldwide</span>
-          <div className="flex items-center gap-8 opacity-40 grayscale hover:grayscale-0 transition-all duration-500">
-            <span className="text-lg font-bold text-white">GENESIS</span>
-            <span className="text-lg font-bold font-tight tracking-tighter text-white">BLOCKFI</span>
-            <span className="text-lg font-semibold italic text-white">NEXO</span>
-            <span className="text-lg font-bold font-tight text-white flex items-center gap-1">
-              <span className="block w-3 h-3 bg-white rounded-full" />CIRCLE
-            </span>
+          <span className="text-sm text-gray-500 font-medium">Built with</span>
+          <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-8 opacity-40 grayscale hover:grayscale-0 transition-all duration-500">
+            <span className="text-sm sm:text-lg font-bold text-white">BITCOIN</span>
+            <span className="text-sm sm:text-lg font-bold font-tight tracking-tighter text-white">STACKS</span>
+            <span className="text-sm sm:text-lg font-semibold text-white">NEXT.JS</span>
+            <span className="text-sm sm:text-lg font-bold font-tight text-white">PRISMA</span>
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

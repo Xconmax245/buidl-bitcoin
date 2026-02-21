@@ -51,9 +51,9 @@ export function CreateWallet({ onComplete }: { onComplete: () => void }) {
       const mnemonic = await createWallet(password, name || "Main Vault");
       setMnemonicPhrase(mnemonic.split(' '));
       setStep('backup');
-    } catch (err) {
-      setError("Failed to create vault");
-      console.error(err);
+    } catch (err: any) {
+      setError(err?.message || "Failed to create vault. Please try again.");
+      console.error("Vault creation error:", err);
     }
   };
 

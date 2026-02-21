@@ -7,7 +7,7 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  webpack: (config) => {
+  webpack: (config, { isServer }) => {
     // Enable WebAssembly support for crypto libraries (tiny-secp256k1, etc.)
     config.experiments = {
       ...config.experiments,
@@ -15,20 +15,18 @@ const nextConfig = {
       layers: true,
     };
 
-    // Prevent webpack from trying to parse .wasm as JS
-    config.module.rules.push({
-      test: /\.wasm$/,
-      type: 'asset/resource',
-    });
-
-    // Handle node: protocol imports and Buffer polyfills
-    config.resolve.fallback = {
-      ...config.resolve.fallback,
-      fs: false,
-      net: false,
-      tls: false,
-      crypto: false,
-    };
+    // Handle node: protocol imports and Buffer polyfills for client-side
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        net: false,
+        tls: false,
+        crypto: false,
+        stream: false,
+        path: false,
+      };
+    }
 
     return config;
   },
