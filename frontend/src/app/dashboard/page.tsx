@@ -235,11 +235,11 @@ export default function DashboardPage() {
   if (!hasWallet && !isDemo) return null;
 
   return (
-    <div className="bg-background-dark font-display text-slate-200 min-h-screen flex overflow-hidden selection:bg-primary selection:text-background-dark">
+    <div className="bg-background-dark font-display text-slate-200 min-h-screen lg:h-screen flex flex-col lg:flex-row overflow-y-auto lg:overflow-hidden selection:bg-primary selection:text-background-dark">
       <Sidebar />
       
-      <main className="flex-1 flex flex-col h-screen overflow-hidden relative pt-16 lg:pt-0">
-        <header className="h-20 lg:h-24 flex items-center justify-between px-4 lg:px-10 border-b border-white/5 bg-background-dark/40 backdrop-blur-xl z-20 sticky top-0">
+      <main className="flex-1 flex flex-col min-h-screen lg:h-full relative overflow-y-auto lg:overflow-hidden pt-16 lg:pt-0">
+        <header className="h-20 lg:h-24 flex items-center justify-between px-4 lg:px-10 border-b border-white/5 bg-background-dark/40 backdrop-blur-xl z-20 sticky top-0 shrink-0">
           <div className="flex items-center gap-3 lg:gap-4">
              <div className="p-2 lg:p-3 bg-primary/10 rounded-2xl border border-primary/20 shrink-0">
                 <HistoryIcon className="text-primary" size={18} />
