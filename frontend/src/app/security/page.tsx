@@ -78,7 +78,7 @@ export default function SecurityPage() {
   };
 
   const handleVerifyContract = () => {
-     window.open('https://explorer.hiro.so/txid/SP2PABAF9FTAJYNFZH93XENAJ8FVY99RRM50D2JG9.ironclad-vault?chain=mainnet', '_blank');
+     window.open('https://explorer.hiro.so/address/SP2PABAF9FTAJYNFZH93XENAJ8FVY99RRM50D2JG9.ironclad-vault?chain=mainnet', '_blank');
   };
 
   return (
@@ -248,7 +248,7 @@ export default function SecurityPage() {
 
                <div className="lg:col-span-4 glass-panel p-10 rounded-[3rem] border-blue-500/20 bg-blue-500/3 flex flex-col justify-center gap-8 relative overflow-hidden">
                   <div className="absolute bottom-0 right-0 w-64 h-64 bg-blue-500/5 blur-[100px] pointer-events-none" />
-                  <div className="w-20 h-20 rounded-[2rem] bg-blue-500/10 flex items-center justify-center text-blue-500 border border-blue-500/20 shrink-0 shadow-2xl shadow-blue-500/5">
+                  <div className="w-20 h-20 rounded-4xl bg-blue-500/10 flex items-center justify-center text-blue-500 border border-blue-500/20 shrink-0 shadow-2xl shadow-blue-500/5">
                     <Server size={40} />
                   </div>
                   <div className="space-y-4">

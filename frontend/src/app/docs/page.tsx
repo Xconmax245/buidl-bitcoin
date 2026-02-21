@@ -173,6 +173,14 @@ export default function DocsPage() {
   const [search, setSearch] = useState("");
   const [selectedTopic, setSelectedTopic] = useState<Topic | null>(null);
 
+  const handleAuditDownload = () => {
+    alert('Security Manifest ironclad-v1.4.2-audit.pdf is being prepared for download.');
+  };
+
+  const handleVerifyContract = () => {
+    window.open('https://explorer.hiro.so/address/SP2PABAF9FTAJYNFZH93XENAJ8FVY99RRM50D2JG9.ironclad-vault?chain=mainnet', '_blank');
+  };
+
   const filteredSections = useMemo(() => {
     return SECTIONS.filter(s => 
       s.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -253,13 +261,22 @@ export default function DocsPage() {
             <div className="mt-12 pt-8 border-t border-white/5">
                 <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest mb-4">Quick Links</p>
                 <div className="space-y-3">
-                   <button className="flex items-center gap-2 text-[10px] font-bold text-slate-400 hover:text-white transition-colors">
+                   <button 
+                     onClick={handleAuditDownload}
+                     className="flex items-center gap-2 text-[10px] font-bold text-slate-400 hover:text-white transition-colors text-left w-full"
+                   >
                       <FileText size={14} /> Audit Report 2024
                    </button>
-                   <button className="flex items-center gap-2 text-[10px] font-bold text-slate-400 hover:text-white transition-colors">
+                   <button 
+                     onClick={handleVerifyContract}
+                     className="flex items-center gap-2 text-[10px] font-bold text-slate-400 hover:text-white transition-colors text-left w-full"
+                   >
                       <Code size={14} /> Verify Contract
                    </button>
-                   <button className="flex items-center gap-2 text-[10px] font-bold text-slate-400 hover:text-white transition-colors">
+                   <button 
+                     onClick={() => alert('Ironclad Vulnerability Disclosure Program (VDP) is hosted on Immunefi. Transitioning...')}
+                     className="flex items-center gap-2 text-[10px] font-bold text-slate-400 hover:text-white transition-colors text-left w-full"
+                   >
                       <Shield size={14} /> Bug Bounty
                    </button>
                 </div>
