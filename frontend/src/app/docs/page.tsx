@@ -1,7 +1,8 @@
 "use client";
 
-import Link from "next/link";
+import { Navbar } from "@/components/layout/Navbar";
 import { Sidebar } from "@/components/layout/Sidebar";
+import { useSession } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Rocket, 
@@ -12,20 +13,13 @@ import {
   Search, 
   ChevronRight, 
   Network,
-  Database,
   Lock,
   Zap,
-  Cpu,
-  ArrowLeft,
-  ArrowRight,
-  ExternalLink,
   ShieldAlert,
   FileText,
   Activity,
-  UserCheck,
-  AlertTriangle,
-  FileSearch,
-  CheckCircle2
+  CheckCircle2,
+  ArrowRight
 } from "lucide-react";
 import { useState, useMemo } from "react";
 
@@ -66,11 +60,6 @@ const SECTIONS: Section[] = [
         name: "Non-Custodial Design", 
         desc: "All keys are encrypted locally with AES-GCM. We never see your seed phrase or private keys.",
         details: "Security first architecture ensures you maintain 100% control over your assets at all times."
-      },
-      {
-        name: "Bitcoin L1 Finality",
-        desc: "Ultimate finality. Funds held in multisig vaults secured by Bitcoin hashpower.",
-        details: "Settlement occurs on the Bitcoin blockchain, providing the highest level of security for locked assets."
       }
     ]
   },
@@ -89,29 +78,6 @@ const SECTIONS: Section[] = [
         name: "Reputation Oracle", 
         desc: "Query on-chain reputation data to determine fee discounts or protocol access levels.",
         code: `(get-reputation (tx-sender))`
-      },
-      { 
-        name: "Slashing Logic", 
-        desc: "Understand the mathematical enforcement of early-exit penalties.",
-        code: `(calculate-penalty (current-block))`
-      }
-    ]
-  },
-  {
-    id: "governance",
-    title: "Governance Model",
-    subtitle: "Reputation-Weighted Sovereignty",
-    icon: Network,
-    topics: [
-      { 
-        name: "Reputation-Weighted Voting", 
-        desc: "Your voice in the protocol scales with your skin in the game. Long-term savers earn higher governance weight.",
-        details: "Reputation accumulation and decaying mechanics ensure active participants have the most influence."
-      },
-      { 
-        name: "Protocol Upgrades", 
-        desc: "Major logic shifts require a 72-hour delay and a super-majority vote from reputation holders.",
-        details: "SIP-010 compliance and upgrade paths focus on long-term stability."
       }
     ]
   },
@@ -130,63 +96,16 @@ const SECTIONS: Section[] = [
         name: "Contract Re-entrancy",
         desc: "Clarity language is non-Turing complete, eliminating entire classes of re-entrancy bugs.",
         status: "SECURE"
-      },
-      {
-        name: "Seed Extraction",
-        desc: "Mnemonic materials never leave your local environment; signed via Stacks/Xverse provider.",
-        status: "USER-MANAGED"
-      },
-      {
-        name: "Oracle Manipulation",
-        desc: "Uses a decentralized set of oracles with reputation-weighted slashing for false reporting.",
-        status: "HIGH-CONFIDENCE"
-      }
-    ]
-  },
-  {
-    id: "security",
-    title: "Security & Audits",
-    subtitle: "Verified Protocol Integrity",
-    icon: Shield,
-    topics: [
-      { 
-        name: "MPC Coordination", 
-        desc: "Institutional vaults use Multi-Party Computation to ensure no single point of failure during signing.",
-        details: "The role of sBTC signers in protocol finality is critical for trustless bridging."
-      },
-      { 
-        name: "Audit History", 
-        desc: "View our latest audit reports from top-tier security firms.",
-        details: "AUDIT REPORT 2024.pdf - Verified v1.4.2"
-      },
-      {
-        name: "Deterministic Recovery",
-        desc: "Losing your local profile does not endanger your assets. Every vault is derived deterministically from your root key.",
-        details: "Use any BIP-39 compatible interface for emergency recovery."
       }
     ]
   }
 ];
 
 export default function DocsPage() {
+  const { data: session } = useSession();
   const [activeTab, setActiveTab] = useState("fundamentals");
   const [search, setSearch] = useState("");
   const [selectedTopic, setSelectedTopic] = useState<Topic | null>(null);
-
-  const handleAuditDownload = () => {
-    alert('Security Manifest ironclad-v1.4.2-audit.pdf is being prepared for download.');
-  };
-
-  const handleVerifyContract = () => {
-    window.open('https://explorer.hiro.so/address/SP2PABAF9FTAJYNFZH93XENAJ8FVY99RRM50D2JG9.ironclad-vault?chain=mainnet', '_blank');
-  };
-
-  const filteredSections = useMemo(() => {
-    return SECTIONS.filter(s => 
-      s.title.toLowerCase().includes(search.toLowerCase()) ||
-      s.topics.some(t => t.name.toLowerCase().includes(search.toLowerCase()))
-    );
-  }, [search]);
 
   const activeSection = useMemo(() => {
     return SECTIONS.find(s => s.id === activeTab) || SECTIONS[0];
@@ -201,11 +120,10 @@ export default function DocsPage() {
   };
 
   return (
-    <div className="bg-background-dark font-display text-slate-200 min-h-screen lg:h-screen flex flex-col lg:flex-row overflow-y-auto lg:overflow-hidden selection:bg-primary selection:text-background-dark">
-      <Sidebar />
+    <div className="bg-background-dark font-display text-slate-200 min-h-screen flex overflow-hidden selection:bg-primary selection:text-background-dark">
+      {session ? <Sidebar /> : <Navbar />}
       
-      <main className="flex-1 flex flex-col min-h-screen lg:h-full relative overflow-y-auto lg:overflow-hidden">
-        {/* Mobile Header / Search Overlay */}
+      <main className={`flex-1 flex flex-col min-h-screen relative ${session ? 'h-screen overflow-hidden pt-16 lg:pt-0' : 'pt-32'}`}>
         <header className="h-20 flex items-center justify-between px-6 md:px-10 border-b border-white/5 bg-background-dark/80 backdrop-blur-xl z-30 shrink-0">
           <div className="flex items-center gap-4">
              <div className="p-2 bg-primary/10 rounded-xl text-primary lg:hidden">
@@ -226,15 +144,14 @@ export default function DocsPage() {
           </div>
         </header>
 
-        <div className="flex-1 flex overflow-hidden lg:overflow-visible">
-          {/* Detailed Navigation (Sidebar within Docs) */}
+        <div className="flex-1 flex overflow-hidden">
           <aside className="hidden lg:block w-72 border-r border-white/5 p-8 overflow-y-auto bg-background-dark/20 backdrop-blur-sm">
             <nav className="space-y-10">
                {SECTIONS.map(s => (
                  <div key={s.id} className="space-y-4">
                     <button 
                       onClick={() => scrollToSection(s.id)}
-                      className={`flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] transition-all ${activeTab === s.id ? 'text-primary' : 'text-slate-500 hover:text-white'}`}
+                      className={`flex items-center gap-3 text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === s.id ? 'text-primary' : 'text-slate-500 hover:text-white'}`}
                     >
                        <s.icon size={16} />
                        {s.title}
@@ -257,243 +174,99 @@ export default function DocsPage() {
                  </div>
                ))}
             </nav>
-            
-            <div className="mt-12 pt-8 border-t border-white/5">
-                <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest mb-4">Quick Links</p>
-                <div className="space-y-3">
-                   <button 
-                     onClick={handleAuditDownload}
-                     className="flex items-center gap-2 text-[10px] font-bold text-slate-400 hover:text-white transition-colors text-left w-full"
-                   >
-                      <FileText size={14} /> Audit Report 2024
-                   </button>
-                   <button 
-                     onClick={handleVerifyContract}
-                     className="flex items-center gap-2 text-[10px] font-bold text-slate-400 hover:text-white transition-colors text-left w-full"
-                   >
-                      <Code size={14} /> Verify Contract
-                   </button>
-                   <button 
-                     onClick={() => alert('Ironclad Vulnerability Disclosure Program (VDP) is hosted on Immunefi. Transitioning...')}
-                     className="flex items-center gap-2 text-[10px] font-bold text-slate-400 hover:text-white transition-colors text-left w-full"
-                   >
-                      <Shield size={14} /> Bug Bounty
-                   </button>
-                </div>
-            </div>
           </aside>
 
-          {/* Doc Content Area */}
-          <div className="flex-1 overflow-y-auto px-6 py-10 md:p-12 lg:p-16 scroll-smooth bg-linear-to-b from-transparent to-background-dark/50">
-            <div className="max-w-4xl mx-auto space-y-24">
-               {filteredSections.map(section => (
-                 <section key={section.id} id={section.id} className="space-y-10 scroll-mt-24">
-                    <div className="flex items-center gap-5">
-                       <div className="w-16 h-16 bg-primary/10 rounded-3xl text-primary border border-primary/20 shadow-lg shadow-primary/5 flex items-center justify-center">
-                          <section.icon size={32} />
-                       </div>
-                       <div>
-                          <h2 className="text-3xl md:text-5xl font-black text-white tracking-tighter uppercase italic">{section.title}</h2>
-                          <div className="flex items-center gap-2 mt-1">
-                             <div className="h-0.5 w-8 bg-primary rounded-full" />
-                             <p className="text-[10px] text-primary font-black uppercase tracking-[0.2em]">{section.subtitle}</p>
+          <section className="flex-1 overflow-y-auto p-6 md:p-12 space-y-20 custom-scrollbar scroll-smooth">
+             {SECTIONS.map(s => (
+               <div key={s.id} id={s.id} className="space-y-10 scroll-mt-32">
+                  <div className="space-y-4">
+                     <div className="flex items-center gap-4">
+                        <div className="p-3 bg-white/5 rounded-2xl text-primary border border-white/10">
+                           <s.icon size={24} />
+                        </div>
+                        <div>
+                           <h2 className="text-3xl font-black text-white uppercase tracking-tighter italic">{s.title}</h2>
+                           <p className="text-xs text-primary font-bold uppercase tracking-widest">{s.subtitle}</p>
+                        </div>
+                     </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-6">
+                     {s.topics.map((topic, idx) => (
+                       <motion.div 
+                         initial={{ opacity: 0, y: 20 }}
+                         whileInView={{ opacity: 1, y: 0 }}
+                         transition={{ delay: idx * 0.1 }}
+                         key={topic.name}
+                         className="glass-panel p-8 rounded-4xl border-white/5 bg-white/2 hover:bg-white/4 transition-all cursor-pointer group relative overflow-hidden"
+                         onClick={() => setSelectedTopic(topic)}
+                       >
+                          <div className="flex justify-between items-start mb-4">
+                             <h3 className="text-lg font-black text-white uppercase tracking-tight group-hover:text-primary transition-colors">{topic.name}</h3>
+                             {topic.status && (
+                               <span className="text-[9px] font-black px-2 py-1 rounded bg-primary/10 text-primary border border-primary/20">{topic.status}</span>
+                             )}
                           </div>
-                       </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                       {section.topics.map((topic, i) => (
-                         <motion.div 
-                           key={i} 
-                           initial={{ opacity: 0, y: 10 }}
-                           whileInView={{ opacity: 1, y: 0 }}
-                           viewport={{ once: true }}
-                           onClick={() => setSelectedTopic(topic)}
-                           className={`glass-panel p-8 rounded-[2.5rem] border-white/5 bg-white/1 space-y-5 hover:border-primary/30 transition-all cursor-pointer group relative overflow-hidden ${topic.code ? 'md:col-span-2' : ''}`}
-                         >
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/2 blur-3xl -mr-16 -mt-16 group-hover:bg-primary/5 transition-colors" />
-                            
-                            <div className="flex justify-between items-start relative z-10">
-                               <h3 className="text-xl font-bold text-white group-hover:text-primary transition-colors">
-                                  {topic.name}
-                               </h3>
-                               {topic.status && (
-                                  <span className={`px-2 py-1 rounded-md text-[8px] font-black uppercase tracking-tighter ${topic.status === 'SECURE' ? 'bg-green-500/10 text-green-500' : 'bg-amber-500/10 text-amber-500'}`}>
-                                     {topic.status}
-                                  </span>
-                               )}
-                            </div>
-                            
-                            <p className="text-sm text-slate-400 leading-relaxed font-light relative z-10">
-                               {topic.desc}
-                            </p>
-                            
-                            <div className="flex items-center justify-between pt-4 relative z-10">
-                               <span className="text-[9px] font-black text-slate-500 group-hover:text-primary transition-colors uppercase tracking-[0.2em] flex items-center gap-2">
-                                  Inspect Details <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                               </span>
-                            </div>
-                         </motion.div>
-                       ))}
-                    </div>
-                 </section>
-               ))}
-
-               {/* Security Log Section */}
-               <section id="security-log" className="space-y-8">
-                  <div className="flex items-center gap-5">
-                    <div className="w-16 h-16 bg-red-500/10 rounded-3xl text-red-500 border border-red-500/20 shadow-lg shadow-red-500/5 flex items-center justify-center">
-                       <Activity size={32} />
-                    </div>
-                    <div>
-                       <h2 className="text-3xl font-black text-white tracking-tighter uppercase italic">Security Log_</h2>
-                       <p className="text-[10px] text-red-500 font-black uppercase tracking-[0.2em] mt-1">LAST_RUN: 2024.02.17.1355</p>
-                    </div>
-                  </div>
-                  
-                  <div className="glass-panel p-0 rounded-[2.5rem] border-white/5 bg-white/1 overflow-hidden">
-                     <table className="w-full text-left">
-                        <thead className="bg-white/5 border-b border-white/5">
-                           <tr>
-                              <th className="px-8 py-5 text-[10px] font-black text-slate-500 uppercase tracking-widest">Incident/Check</th>
-                              <th className="px-8 py-5 text-[10px] font-black text-slate-500 uppercase tracking-widest">Class</th>
-                              <th className="px-8 py-5 text-[10px] font-black text-slate-500 uppercase tracking-widest text-right">Status</th>
-                           </tr>
-                        </thead>
-                        <tbody className="divide-y divide-white/5">
-                           {[
-                              { id: "FIND-01", name: "Integer Overflow in Reward Calc", class: "Logic", status: "Fixed", color: "text-green-400" },
-                              { id: "FIND-02", name: "Redundant Map Lookups", class: "Gas", status: "Optimized", color: "text-primary" },
-                              { id: "FIND-03", name: "Seed Phrase UI Guidance", class: "UX", status: "Mitigated", color: "text-slate-400" },
-                           ].map(log => (
-                              <tr key={log.id} className="hover:bg-white/2 transition-colors">
-                                 <td className="px-8 py-5">
-                                    <div className="flex items-center gap-3">
-                                       <span className="text-[10px] font-black text-slate-600 font-mono">{log.id}</span>
-                                       <span className="text-xs font-bold text-white">{log.name}</span>
-                                    </div>
-                                 </td>
-                                 <td className="px-8 py-5 text-[10px] font-black text-slate-500 uppercase">{log.class}</td>
-                                 <td className={`px-8 py-5 text-[10px] font-black uppercase text-right ${log.color}`}>{log.status}</td>
-                              </tr>
-                           ))}
-                        </tbody>
-                     </table>
-                  </div>
-               </section>
-
-               {/* Developer Hub CTA */}
-               <div className="glass-panel p-10 md:p-16 rounded-[3rem] border-primary/20 bg-linear-to-br from-primary/5 via-transparent to-transparent text-center space-y-8 mb-12">
-                  <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto border border-primary/20 shadow-2xl shadow-primary/10">
-                     <Cpu size={40} className="text-primary" />
-                  </div>
-                  <div className="space-y-3">
-                    <h3 className="text-3xl font-black text-white tracking-tighter uppercase">Protocol Developer Hub</h3>
-                    <p className="text-base text-slate-400 max-w-xl mx-auto font-light leading-relaxed">
-                      Scale the sovereign economy. Build high-assurance apps on the Ironclad settlement layer using decentralized primitives.
-                    </p>
-                  </div>
-                  <div className="flex flex-wrap justify-center gap-4">
-                     <button className="px-10 py-4 bg-primary text-background-dark font-black text-[10px] uppercase tracking-widest rounded-2xl hover:bg-white transition-all shadow-xl shadow-primary/10 active:scale-95">
-                        Join Beta Access
-                     </button>
-                     <button className="px-10 py-4 bg-white/5 border border-white/10 text-white font-black text-[10px] uppercase tracking-widest rounded-2xl hover:bg-white/10 transition-all active:scale-95">
-                        GitHub Source
-                     </button>
+                          <p className="text-sm text-slate-400 leading-relaxed max-w-2xl wrap-break-word">{topic.desc}</p>
+                          <div className="mt-6 flex items-center gap-2 text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                              Explore Specs <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                          </div>
+                       </motion.div>
+                     ))}
                   </div>
                </div>
-            </div>
-          </div>
+             ))}
+          </section>
         </div>
       </main>
 
-      {/* Detail Overlay (Pseudo-Pages) */}
       <AnimatePresence>
-         {selectedTopic && (
-           <motion.div 
-             initial={{ opacity: 0 }}
-             animate={{ opacity: 1 }}
-             exit={{ opacity: 0 }}
-             className="fixed inset-0 z-50 bg-background-dark/95 backdrop-blur-2xl flex items-center justify-center p-6"
-           >
-              <motion.div 
-                initial={{ scale: 0.9, y: 20 }}
-                animate={{ scale: 1, y: 0 }}
-                exit={{ scale: 0.9, y: 20 }}
-                className="w-full max-w-2xl glass-panel p-8 md:p-12 rounded-[3.5rem] border-white/10 bg-white/1 relative overflow-hidden"
-              >
-                 <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
-                 
-                 <button 
-                   onClick={() => setSelectedTopic(null)}
-                   className="absolute top-8 right-8 p-2 bg-white/5 rounded-xl hover:bg-white/10 transition-colors text-slate-400 hover:text-white"
-                 >
-                    <ArrowLeft size={20} />
-                 </button>
-
-                 <div className="space-y-8 relative z-10">
-                    <div className="space-y-2">
-                       <span className="text-[10px] font-black text-primary uppercase tracking-[0.3em]">Technical Specification_</span>
-                       <h2 className="text-3xl md:text-5xl font-black text-white uppercase tracking-tighter">{selectedTopic.name}</h2>
-                    </div>
-
-                    <div className="space-y-6">
-                       <p className="text-lg text-slate-300 font-light leading-relaxed italic">
-                          "{selectedTopic.desc}"
-                       </p>
-                       
-                       {selectedTopic.details && (
-                          <div className="p-6 bg-white/5 rounded-3xl border border-white/5 space-y-3">
-                             <div className="flex items-center gap-2 text-[10px] font-black text-slate-500 uppercase tracking-widest">
-                                <FileSearch size={14} className="text-primary" /> Implementation Details
-                             </div>
-                             <p className="text-sm text-slate-400 leading-relaxed font-light">
-                                {selectedTopic.details}
-                             </p>
-                          </div>
-                       )}
-
-                       {selectedTopic.code && (
-                          <div className="space-y-3">
-                             <div className="flex items-center gap-2 text-[10px] font-black text-slate-500 uppercase tracking-widest">
-                                <Code size={14} className="text-primary" /> Clarity_Execution_Snippet
-                             </div>
-                             <div className="p-6 bg-black/60 rounded-3xl border border-white/10 font-mono text-xs text-primary/90 relative group">
-                                <pre className="overflow-x-auto">{selectedTopic.code}</pre>
-                                <button className="absolute top-4 right-4 p-2 opacity-0 group-hover:opacity-100 transition-opacity bg-primary/10 rounded-lg text-primary">
-                                   <Terminal size={14} />
-                                </button>
-                             </div>
-                          </div>
-                       )}
-
-                       {selectedTopic.status && (
-                          <div className="flex items-center gap-4 p-4 bg-primary/5 rounded-2xl border border-primary/20">
-                             <CheckCircle2 size={24} className="text-primary" />
-                             <div>
-                                <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest">Security Status</p>
-                                <p className="text-sm font-black text-white uppercase tracking-[0.1em]">{selectedTopic.status}</p>
-                             </div>
-                          </div>
-                       )}
-                    </div>
-
-                    <div className="pt-8 border-t border-white/5 flex gap-4">
-                       <button className="flex-1 py-4 bg-primary text-background-dark font-black text-[10px] uppercase tracking-widest rounded-xl hover:bg-white transition-all flex items-center justify-center gap-2">
-                          View Recovery Guide <ExternalLink size={14} />
-                       </button>
-                       <button 
-                         onClick={() => setSelectedTopic(null)}
-                         className="px-8 py-4 bg-white/5 border border-white/10 text-white font-black text-[10px] uppercase tracking-widest rounded-xl hover:bg-white/10 transition-all"
-                       >
-                          Close Detail
-                       </button>
-                    </div>
-                 </div>
-              </motion.div>
-           </motion.div>
-         )}
+        {selectedTopic && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-100 flex items-center justify-center p-6 bg-background-dark/80 backdrop-blur-md"
+            onClick={() => setSelectedTopic(null)}
+          >
+             <motion.div 
+               initial={{ scale: 0.9, opacity: 0 }}
+               animate={{ scale: 1, opacity: 1 }}
+               exit={{ scale: 0.9, opacity: 0 }}
+               className="max-w-2xl w-full glass-panel p-10 rounded-[3rem] border-white/10 bg-background-dark relative"
+               onClick={e => e.stopPropagation()}
+             >
+                <div className="space-y-6">
+                   <h3 className="text-2xl font-black text-white uppercase tracking-tighter italic">{selectedTopic.name}</h3>
+                   <div className="h-px bg-white/10 w-full" />
+                   <p className="text-slate-400 leading-relaxed font-light wrap-break-word">{selectedTopic.desc}</p>
+                   {selectedTopic.details && (
+                     <div className="p-6 bg-white/5 rounded-2xl border border-white/5">
+                        <p className="text-xs text-slate-300 leading-relaxed italic wrap-break-word">{selectedTopic.details}</p>
+                     </div>
+                   )}
+                   {selectedTopic.code && (
+                     <div className="p-6 bg-black/40 rounded-2xl border border-white/5 font-mono text-[11px] text-primary overflow-x-auto">
+                        <pre>{selectedTopic.code}</pre>
+                     </div>
+                   )}
+                   <button 
+                     onClick={() => setSelectedTopic(null)}
+                     className="w-full py-4 bg-primary text-background-dark font-black uppercase text-xs tracking-widest rounded-2xl hover:bg-white transition-all"
+                   >
+                     Clear Inspection View
+                   </button>
+                </div>
+             </motion.div>
+          </motion.div>
+        )}
       </AnimatePresence>
+
+      <style jsx global>{`
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+      `}</style>
     </div>
   );
 }

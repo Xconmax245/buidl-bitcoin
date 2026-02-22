@@ -117,7 +117,7 @@ export class StacksService {
         finalityLag: blockLag === 0 ? "Optimal" : `${blockLag} Blocks`,
         consensusIntegrity: 0.9999,
         securityTier: "Institutional",
-        auditDate: "2024-02-15"
+        auditDate: "2026-02-15"
       };
     } catch (e) {
       return null;

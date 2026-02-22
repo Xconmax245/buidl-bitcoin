@@ -111,24 +111,24 @@ export default function LedgerPage() {
            </button>
         </div>
 
-        <header className="h-24 flex items-center justify-between px-6 lg:px-10 border-b border-white/5 bg-background-dark/40 backdrop-blur-xl z-10 sticky top-0">
-          <div className="flex items-center gap-4">
-             <div className="p-3 bg-primary/10 rounded-2xl border border-primary/20">
-                <HistoryIcon className="text-primary" size={24} />
+        <header className="h-20 lg:h-24 flex items-center justify-between px-4 lg:px-10 border-b border-white/5 bg-background-dark/40 backdrop-blur-xl z-30 sticky top-0 shrink-0">
+          <div className="flex items-center gap-3 lg:gap-4 min-w-0">
+             <div className="p-2 lg:p-3 bg-primary/10 rounded-2xl border border-primary/20 shrink-0">
+                <HistoryIcon className="text-primary w-[18px] h-[18px] lg:w-[24px] lg:h-[24px]" />
              </div>
-             <div>
-                <h1 className="text-2xl font-black text-white uppercase tracking-tighter">Immutable Ledger</h1>
-                <p className="text-[10px] text-muted-silver uppercase font-bold tracking-[0.2em] mt-0.5">Real-time Protocol Activity_</p>
+             <div className="min-w-0">
+                <h1 className="text-sm lg:text-2xl font-black text-white uppercase tracking-tighter truncate">Immutable Ledger</h1>
+                <p className="hidden md:block text-[10px] text-muted-silver uppercase font-bold tracking-[0.2em] mt-0.5">Real-time Protocol Activity_</p>
              </div>
           </div>
           
-          <div className="flex items-center gap-4">
-             <div className="relative group">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-silver group-focus-within:text-primary transition-colors" size={16} />
+          <div className="flex items-center gap-2 lg:gap-4 ml-2">
+             <div className="relative group hidden sm:block">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-silver group-focus-within:text-primary transition-colors" size={14} />
                 <input 
                   type="text"
-                  placeholder="Filter by hash, type or sender..."
-                  className="bg-white/5 border border-white/10 rounded-xl py-2.5 pl-12 pr-6 text-xs font-bold text-white placeholder:text-muted-silver focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-all min-w-[350px]"
+                  placeholder="Filter..."
+                  className="bg-white/5 border border-white/10 rounded-xl py-2.5 pl-10 lg:pl-12 pr-4 text-xs font-bold text-white focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all w-[150px] md:w-[250px] lg:w-[350px]"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -136,9 +136,9 @@ export default function LedgerPage() {
              <button 
                onClick={fetchLedger}
                disabled={isRefreshing}
-               className={`p-2.5 glass-panel rounded-xl text-muted-silver hover:text-white transition-all ${isRefreshing ? 'animate-spin text-primary' : 'hover:scale-105 active:scale-95'}`}
+               className={`p-2 lg:p-2.5 glass-panel rounded-xl text-muted-silver hover:text-white transition-all ${isRefreshing ? 'animate-spin text-primary' : 'hover:scale-105 active:scale-95'}`}
              >
-               <RefreshCcw size={20} />
+               <RefreshCcw className="w-[18px] h-[18px] lg:w-[20px] lg:h-[20px]" />
              </button>
           </div>
         </header>
@@ -178,11 +178,11 @@ export default function LedgerPage() {
                     <table className="w-full text-left border-collapse">
                        <thead>
                           <tr className="border-b border-white/5 bg-white/2">
-                             <th className="px-10 py-6 text-[11px] font-black text-muted-silver uppercase tracking-[0.2em]">Hash / Authentication</th>
-                             <th className="px-10 py-6 text-[11px] font-black text-muted-silver uppercase tracking-[0.2em]">Protocol Intent</th>
-                             <th className="px-10 py-6 text-[11px] font-black text-muted-silver uppercase tracking-[0.2em]">Asset Volume</th>
-                             <th className="px-10 py-6 text-[11px] font-black text-muted-silver uppercase tracking-[0.2em]">L1 Status</th>
-                             <th className="px-10 py-6 text-[11px] font-black text-muted-silver uppercase tracking-[0.2em]">Verification</th>
+                             <th className="px-5 lg:px-10 py-4 lg:py-6 text-[10px] lg:text-[11px] font-black text-muted-silver uppercase tracking-[0.2em]">Hash / Auth</th>
+                             <th className="hidden md:table-cell px-10 py-6 text-[11px] font-black text-muted-silver uppercase tracking-[0.2em]">Protocol Intent</th>
+                             <th className="px-5 lg:px-10 py-6 text-[11px] font-black text-muted-silver uppercase tracking-[0.2em]">Asset Volume</th>
+                             <th className="hidden lg:table-cell px-10 py-6 text-[11px] font-black text-muted-silver uppercase tracking-[0.2em]">L1 Status</th>
+                             <th className="px-5 lg:px-10 py-6 text-[11px] font-black text-muted-silver uppercase tracking-[0.2em]">Verification</th>
                           </tr>
                        </thead>
                        <tbody className="divide-y divide-white/5">
@@ -195,60 +195,60 @@ export default function LedgerPage() {
                                  key={tx.id} 
                                  className="hover:bg-white/3 transition-colors group cursor-default"
                                >
-                                  <td className="px-10 py-8">
-                                     <div className="flex items-center gap-5">
-                                        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center border transition-all shadow-lg ${
+                                  <td className="px-5 lg:px-10 py-6 lg:py-8">
+                                     <div className="flex items-center gap-3 lg:gap-5">
+                                        <div className={`hidden sm:flex w-10 h-10 lg:w-12 lg:h-12 rounded-xl lg:rounded-2xl items-center justify-center border transition-all shadow-lg shrink-0 ${
                                           tx.type === 'PEER_TRANSFER' ? 'bg-primary/20 border-primary/30 text-primary shadow-primary/10' :
                                           tx.type === 'PROTOCOL_INTEGRATION' ? 'bg-white/10 border-white/20 text-white shadow-white/5' :
                                           'bg-white/5 border-white/10 text-muted-silver'
                                         }`}>
-                                          {tx.type === 'PEER_TRANSFER' ? <ArrowDownLeft size={20} /> : 
-                                           tx.type === 'PROTOCOL_INTEGRATION' ? <Zap size={20} /> : <Activity size={20} />}
+                                          {tx.type === 'PEER_TRANSFER' ? <ArrowDownLeft size={18} /> : 
+                                           tx.type === 'PROTOCOL_INTEGRATION' ? <Zap size={18} /> : <Activity size={18} />}
                                         </div>
-                                        <div>
+                                        <div className="min-w-0">
                                            <div className="flex items-center gap-2">
-                                              <p className="text-sm font-black text-white font-mono tracking-tight group-hover:text-primary transition-colors">{tx.hash}</p>
+                                              <p className="text-[11px] lg:text-sm font-black text-white font-mono tracking-tight group-hover:text-primary transition-colors truncate">{tx.hash}</p>
                                            </div>
-                                           <div className="flex items-center gap-2 mt-1.5 grayscale group-hover:grayscale-0 transition-all opacity-40 group-hover:opacity-100">
-                                               <span className="text-[10px] text-muted-silver font-black uppercase tracking-widest">Auth:</span>
-                                               <span className="text-[10px] text-muted-silver font-mono">{tx.sender?.slice(0, 16) || "Protocol_Managed"}...</span>
+                                           <div className="flex items-center gap-2 mt-1.5 grayscale group-hover:grayscale-0 transition-all opacity-40 group-hover:opacity-100 min-w-0">
+                                               <span className="text-[8px] lg:text-[10px] text-muted-silver font-black uppercase tracking-widest shrink-0">Auth:</span>
+                                               <span className="text-[8px] lg:text-[10px] text-muted-silver font-mono truncate">{tx.sender}</span>
                                             </div>
                                         </div>
                                      </div>
                                   </td>
-                                  <td className="px-10 py-8">
+                                  <td className="hidden md:table-cell px-10 py-8">
                                      <span className="text-[10px] font-black bg-white/5 px-4 py-2 rounded-xl text-white border border-white/10 uppercase tracking-widest group-hover:border-primary/40 transition-all whitespace-nowrap">
                                         {tx.type.replace('_', ' ')}
                                      </span>
                                   </td>
-                                    <td className="px-10 py-8">
-                                     <div>
-                                        <p className={tx.amount > 0 ? "text-lg font-black text-primary font-mono tracking-tighter" : "text-lg font-black text-white font-mono tracking-tighter"}>
-                                           {tx.amount > 0 ? `+${(tx.amount || 0).toLocaleString(undefined, { minimumFractionDigits: 6 })}` : (tx.amount || 0).toFixed(6)}
-                                           <span className="text-[10px] ml-2 font-black text-muted-silver uppercase">{tx.token}</span>
+                                    <td className="px-5 lg:px-10 py-8">
+                                     <div className="min-w-[80px]">
+                                        <p className={tx.amount > 0 ? "text-xs lg:text-lg font-black text-primary font-mono tracking-tighter" : "text-xs lg:text-lg font-black text-white font-mono tracking-tighter"}>
+                                           {tx.amount > 0 ? `+${(tx.amount || 0).toLocaleString(undefined, { minimumFractionDigits: 4 })}` : (tx.amount || 0).toFixed(4)}
+                                           <span className="text-[8px] lg:text-[10px] ml-1 lg:ml-2 font-black text-muted-silver uppercase">{tx.token}</span>
                                         </p>
-                                        <div className="flex items-center gap-1.5 mt-1">
+                                        <div className="hidden sm:flex items-center gap-1.5 mt-1">
                                            <div className="w-1 h-1 rounded-full bg-muted-silver/30" />
-                                           <p className="text-[10px] text-muted-silver/60 font-bold uppercase tracking-widest">Network Fee: {(tx.fee || 0).toFixed(6)} STX</p>
+                                           <p className="text-[8px] lg:text-[10px] text-muted-silver/60 font-bold uppercase tracking-widest">Fee: {(tx.fee || 0).toFixed(6)} </p>
                                         </div>
                                      </div>
                                   </td>
-                                  <td className="px-10 py-8">
-                                     <div className="flex items-center gap-3">
-                                        <span className={`w-2 h-2 rounded-full ${tx.status === 'CONFIRMED' ? 'bg-primary shadow-[0_0_12px_rgba(169,208,195,0.7)]' : 'bg-muted-silver/30 animate-pulse'}`} />
-                                        <span className={`text-[10px] font-black uppercase tracking-[0.2em] ${tx.status === 'CONFIRMED' ? 'text-primary' : 'text-muted-silver'}`}>
+                                  <td className="px-5 lg:px-10 py-8">
+                                     <div className="flex items-center gap-2 lg:gap-3">
+                                        <span className={`w-1.5 h-1.5 lg:w-2 lg:h-2 rounded-full ${tx.status === 'CONFIRMED' ? 'bg-primary shadow-[0_0_12px_rgba(169,208,195,0.7)]' : 'bg-muted-silver/30 animate-pulse'}`} />
+                                        <span className={`text-[8px] lg:text-[10px] font-black uppercase tracking-[0.2em] ${tx.status === 'CONFIRMED' ? 'text-primary' : 'text-muted-silver'}`}>
                                            {tx.status}
                                         </span>
                                      </div>
                                   </td>
-                                  <td className="px-10 py-8">
+                                  <td className="px-5 lg:px-10 py-8">
                                      <a 
                                        href={`https://explorer.hiro.so/txid/${tx.id}?chain=${isMainnet ? 'mainnet' : 'testnet'}`}
                                        target="_blank"
                                        rel="noopener noreferrer"
-                                       className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/2 border border-white/10 text-[10px] font-black text-muted-silver uppercase tracking-widest hover:text-primary hover:border-primary/30 hover:bg-primary/5 transition-all group/btn"
+                                       className="inline-flex items-center gap-2 px-3 py-2 lg:px-4 lg:py-2.5 rounded-xl bg-white/2 border border-white/10 text-[8px] lg:text-[10px] font-black text-muted-silver uppercase tracking-widest hover:text-primary hover:border-primary/30 hover:bg-primary/5 transition-all group/btn"
                                      >
-                                        Inspect
+                                        <span className="hidden sm:inline">Inspect</span>
                                         <ArrowUpRight size={14} className="group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
                                      </a>
                                   </td>

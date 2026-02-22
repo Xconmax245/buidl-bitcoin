@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { Navbar } from "@/components/layout/Navbar";
 import { Sidebar } from "@/components/layout/Sidebar";
+import { useSession } from "next-auth/react";
 import { motion } from "framer-motion";
 import { 
   Shield, 
@@ -19,22 +21,16 @@ import {
 } from "lucide-react";
 
 export default function PhilosophyPage() {
+  const { data: session } = useSession();
+
   return (
-    <div className="bg-background-dark font-display text-slate-200 min-h-screen lg:h-screen flex flex-col lg:flex-row overflow-y-auto lg:overflow-hidden selection:bg-primary selection:text-background-dark">
-      <Sidebar />
+    <div className="bg-background-dark font-display text-slate-200 min-h-screen flex overflow-hidden selection:bg-primary selection:text-background-dark">
+      {session ? <Sidebar /> : <Navbar />}
       
-      <main className="flex-1 flex flex-col min-h-screen lg:h-full relative overflow-y-auto lg:overflow-hidden">
-        {/* Technical Header */}
-        <header className="h-24 hidden lg:flex items-center justify-between px-10 border-b border-white/5 bg-background-dark/80 backdrop-blur-xl z-20 sticky top-0">
-          <div className="flex items-center space-x-6">
-            <h1 className="text-2xl font-bold text-white tracking-tight uppercase italic">Core Philosophy</h1>
-            <div className="h-6 w-px bg-white/10" />
-            <div className="flex items-center gap-2 text-xs font-bold text-slate-500 uppercase tracking-[0.2em]">
-              <Globe size={14} className="text-primary" />
-              Sovereign Baseline
-            </div>
-          </div>
-        </header>
+      <main className={`flex-1 flex flex-col min-h-screen relative ${session ? 'h-screen overflow-hidden pt-16 lg:pt-0' : 'pt-32'}`}>
+        {/* Ambient Background Effects */}
+        <div className="absolute top-0 right-0 w-full h-[500px] bg-primary/2 blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-full h-[500px] bg-white/1 blur-[100px] pointer-events-none" />
 
         <div className="flex-1 overflow-y-auto p-5 md:p-8 lg:p-12 pt-24 lg:pt-12 scroll-smooth bg-glow">
           <div className="max-w-6xl mx-auto space-y-20 pb-20">

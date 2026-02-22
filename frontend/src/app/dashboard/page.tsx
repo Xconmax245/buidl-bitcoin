@@ -239,10 +239,10 @@ export default function DashboardPage() {
       <Sidebar />
       
       <main className="flex-1 flex flex-col min-h-screen lg:h-full relative overflow-y-auto lg:overflow-hidden pt-16 lg:pt-0">
-        <header className="h-20 lg:h-24 flex items-center justify-between px-4 lg:px-10 border-b border-white/5 bg-background-dark/40 backdrop-blur-xl z-20 sticky top-0 shrink-0">
-          <div className="flex items-center gap-3 lg:gap-4">
+        <header className="h-20 lg:h-24 flex items-center justify-between px-4 lg:px-10 border-b border-white/5 bg-background-dark/40 backdrop-blur-xl z-30 sticky top-0 shrink-0">
+          <div className="flex items-center gap-3 lg:gap-4 min-w-0">
              <div className="p-2 lg:p-3 bg-primary/10 rounded-2xl border border-primary/20 shrink-0">
-                <HistoryIcon className="text-primary" size={18} />
+                <HistoryIcon className="text-primary w-[18px] h-[18px] lg:w-[24px] lg:h-[24px]" />
              </div>
              <div className="min-w-0">
                 <h1 className="text-sm lg:text-2xl font-black text-white uppercase tracking-tighter truncate">Immutable Ledger</h1>
@@ -256,7 +256,7 @@ export default function DashboardPage() {
                 <input 
                   type="text"
                   placeholder="Filter..."
-                  className="bg-white/5 border border-white/10 rounded-xl py-2.5 pl-12 pr-6 text-xs font-bold text-white focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all w-[250px] lg:w-[350px]"
+                  className="bg-white/5 border border-white/10 rounded-xl py-2.5 pl-10 lg:pl-12 pr-4 text-xs font-bold text-white focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all w-[150px] md:w-[250px] lg:w-[350px]"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -266,7 +266,7 @@ export default function DashboardPage() {
                disabled={isRefreshing}
                className={`p-2 lg:p-2.5 glass-panel rounded-xl text-muted-silver hover:text-white transition-all ${isRefreshing ? 'animate-spin text-primary' : 'hover:scale-105 active:scale-95'}`}
              >
-               <RefreshCcw size={18} />
+               <RefreshCcw className="w-[18px] h-[18px] lg:w-[20px] lg:h-[20px]" />
              </button>
              <div className="hidden sm:block">
                 <NotificationsModal />
@@ -703,7 +703,7 @@ export default function DashboardPage() {
             </div>
             
             <footer className="mt-12 py-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 bg-transparent">
-              <p className="text-[10px] font-bold text-slate-600 uppercase tracking-[0.3em]">Ironclad Sovereign Protocol © 2024</p>
+              <p className="text-[10px] font-bold text-slate-600 uppercase tracking-[0.3em]">Ironclad Sovereign Protocol © 2026</p>
               <div className="flex space-x-8">
                 {['Documentation', 'Security', 'Github'].map(link => (
                   <Link key={link} href={`/${link.toLowerCase()}`} className="text-[10px] font-black text-slate-500 hover:text-primary transition-all uppercase tracking-widest">{link}</Link>

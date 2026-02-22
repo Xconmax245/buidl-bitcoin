@@ -156,4 +156,4 @@ npm run dev
 ---
 
 _Verified Ironclad Protocol v2.1.0_  
-_Ironclad Sovereign Protocol © 2024-2026_
+_Ironclad Sovereign Protocol © 2026_
