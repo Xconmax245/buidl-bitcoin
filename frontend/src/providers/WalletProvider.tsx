@@ -6,6 +6,7 @@ import { db } from "@/lib/storage/db";
 import { CryptoService } from "@/lib/security/crypto";
 import { BitcoinClient } from "@/lib/bitcoin/client";
 import type { WalletKeys } from "@/lib/bitcoin/wallet";
+import { WalletSelectionModal } from "@/components/wallet/WalletSelectionModal";
 
 // Lazy-load Stacks Connect and BitcoinWallet to avoid SSR/WASM issues
 let _userSession: any = null;
@@ -48,12 +49,19 @@ interface WalletContextType extends WalletState {
   disconnectStacks: () => void;
   updateProfile: (name: string) => Promise<void>;
   setNetworkMode: (mode: 'mainnet' | 'testnet') => void;
+  openWalletModal: () => void;
 }
 
 const WalletContext = createContext<WalletContextType | null>(null);
 
 export function WalletProvider({ children }: { children: ReactNode }) {
   const [userSession, setUserSession] = useState<any>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
+  }, []);
 
   // Initialize Stacks session on client
   useEffect(() => {
@@ -175,14 +183,27 @@ export function WalletProvider({ children }: { children: ReactNode }) {
     return () => clearTimeout(timeout);
   }, [state.isUnlocked, keys, state.hasWallet]);
 
+  const openWalletModal = () => setIsModalOpen(true);
+
   const connectStacks = async () => {
+    // If on mobile and modal is not open, open it first to give options
+    if (isMobile) {
+      setIsModalOpen(true);
+      return;
+    }
+    
+    // Otherwise try direct extension trigger
+    await triggerStacksConnect();
+  };
+
+  const triggerStacksConnect = async () => {
     const session = await getStacksSession();
     if (!session) return;
     const { showConnect: sc } = await import("@stacks/connect");
     sc({
       appDetails: {
         name: 'Ironclad',
-        icon: window.location.origin + '/icon.png',
+        icon: window.location.origin + '/assets/logo.png',
       },
       redirectTo: '/onboarding',
       onFinish: () => {
@@ -407,9 +428,18 @@ export function WalletProvider({ children }: { children: ReactNode }) {
       connectStacks,
       disconnectStacks,
       updateProfile,
-      setNetworkMode
+      setNetworkMode,
+      openWalletModal
     }}>
       {children}
+      <WalletSelectionModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        onConnectExtension={() => {
+          setIsModalOpen(false);
+          triggerStacksConnect();
+        }}
+      />
     </WalletContext.Provider>
   );
 }

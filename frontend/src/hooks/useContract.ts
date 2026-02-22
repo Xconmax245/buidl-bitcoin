@@ -23,6 +23,8 @@ import { useNotifications } from '@/providers/NotificationProvider';
 const useSafeConnect = () => {
   const [connectFn, setConnectFn] = useState<any>(null);
 
+  const { openWalletModal, walletType } = useWallet();
+
   useEffect(() => {
     // Dynamically import and try to get the connect function
     import('@stacks/connect-react').then((mod) => {
@@ -36,6 +38,15 @@ const useSafeConnect = () => {
   }, []);
 
   const doContractCall = useCallback(async (options: any) => {
+    // Check if mobile and likely not in a wallet browser
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const hasStacksProvider = typeof window !== 'undefined' && ((window as any).StacksProvider || (window as any).LeatherProvider || (window as any).XverseProviders);
+    
+    if (isMobile && !hasStacksProvider && walletType !== 'stacks') {
+      openWalletModal();
+      return;
+    }
+
     if (connectFn) {
       return connectFn(options);
     }
@@ -259,7 +270,7 @@ export const useContract = () => {
       functionArgs: [principalCV(user), uintCV(balance), bufferCV(sigBuff)],
       postConditionMode: PostConditionMode.Deny,
       postConditions: [],
-      onFinish: (data) => {
+      onFinish: (data: any) => {
         console.log('Verification sent:', data);
         addNotification({
           type: 'success',
@@ -287,7 +298,7 @@ export const useContract = () => {
       functionArgs: [principalCV(user)],
       postConditionMode: PostConditionMode.Deny,
       postConditions: [],
-      onFinish: (data) => {
+      onFinish: (data: any) => {
         console.log('Time Verification sent:', data);
         addNotification({
           type: 'success',

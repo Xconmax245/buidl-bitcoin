@@ -390,7 +390,7 @@ export default function AuthPage({ onSuccess, hideHeader = false }: AuthPageProp
                 </button>
                 <button 
                   type="button"
-                  onClick={connectStacks}
+                  onClick={() => connectStacks()}
                   className="flex items-center justify-center gap-3 bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all rounded-2xl py-4 text-sm font-bold text-white group"
                 >
                   <WalletIcon size={20} className="text-white group-hover:scale-110 transition-transform" />
