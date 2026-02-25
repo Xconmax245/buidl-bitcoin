@@ -31,7 +31,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             where: { 
               OR: [
                 { walletAddress: address },
-                { email: `${address.slice(0, 10)}@stacks.local` }
+                { email: `${address}@stacks.local` }
               ]
             },
             include: { profile: true }
@@ -41,7 +41,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             user = await prisma.user.create({
               data: {
                 walletAddress: address,
-                email: `${address.slice(0, 10)}@stacks.local`,
+                email: `${address}@stacks.local`,
                 authProvider: 'WALLET',
               },
               include: { profile: true }

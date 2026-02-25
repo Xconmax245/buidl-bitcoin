@@ -47,29 +47,37 @@ export default function AuthPage({
 
   const isUnlockPhase = hasWallet && !isUnlocked && sessionStatus === "authenticated";
 
+  const handshakeAttempted = React.useRef(false);
+
   React.useEffect(() => {
     // Only attempt auto-login if not already authenticated and not currently attempting
-    if (hasWallet && address && !walletLoading && sessionStatus === "unauthenticated" && !isAuthAttempting) {
-      console.log("[Auth] Protocol detected in environment. Initiating handshake...");
+    if (hasWallet && address && !walletLoading && sessionStatus === "unauthenticated" && !isAuthAttempting && !handshakeAttempted.current) {
+      console.log("[Auth] Protocol detected in environment. Initiating handshake for:", address);
+      handshakeAttempted.current = true;
       setIsAuthAttempting(true);
+      
       signIn('credentials', { 
         address, 
         loginType: 'wallet',
-        redirect: false,
-        callbackUrl: '/onboarding'
+        redirect: false
       }).then((res) => {
         if (!res?.error) {
-           console.log("[Auth] Handshake verified.");
-           if (onSuccess) onSuccess();
-           else router.push('/onboarding');
+           console.log("[Auth] Handshake verified. Syncing protocol state...");
+           window.location.href = '/onboarding';
         } else {
            console.error("[Auth] Handshake refused:", res.error);
-           setError("Handshake refused by protocol. Please try again manually.");
+           setError(`Protocol handshake refused: ${res.error}`);
            setIsAuthAttempting(false);
+           handshakeAttempted.current = false; // Allow retry
         }
+      }).catch(err => {
+         console.error("[Auth] Handshake failed:", err);
+         setError("Connection to protocol lost. Please try manual authorization.");
+         setIsAuthAttempting(false);
+         handshakeAttempted.current = false;
       });
     }
-  }, [hasWallet, address, walletLoading, sessionStatus, onSuccess, router, isAuthAttempting]);
+  }, [hasWallet, address, walletLoading, sessionStatus, isAuthAttempting]);
 
   const {
     register,
@@ -404,16 +412,22 @@ export default function AuthPage({
                 </button>
                 <button 
                   type="button"
-                  onClick={() => {
+                  onClick={async () => {
                     if (hasWallet && address) {
-                      // Manual trigger for handshake if auto failed
-                      console.log("[Auth] Manual handshake requested.");
+                      console.log("[Auth] Manual handshake requested for:", address);
                       setIsAuthAttempting(true);
-                      signIn('credentials', { 
-                        address, 
-                        loginType: 'wallet',
-                        callbackUrl: '/onboarding'
-                      });
+                      try {
+                        await signIn('credentials', { 
+                          address, 
+                          loginType: 'wallet',
+                          callbackUrl: '/onboarding',
+                          redirect: true
+                        });
+                      } catch (e) {
+                        console.error("Manual signin failed", e);
+                        setError("Handshake failed. Protocol rejected the signature.");
+                        setIsAuthAttempting(false);
+                      }
                     } else {
                       connectStacks();
                     }

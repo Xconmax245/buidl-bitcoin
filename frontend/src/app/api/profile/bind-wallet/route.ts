@@ -31,31 +31,36 @@ export async function POST(req: Request) {
 
     // Only update if provided
     const updateData: any = {};
-    if (btcXpub) updateData.btcXpub = btcXpub;
-    if (stacksPrincipal) updateData.stacksPrincipal = stacksPrincipal;
-    
     // Set timestamp if at least one is being bound and it wasn't set before
     // Or just always update it to show *latest* binding? 
     // The spec says "wallet_binding_timestamp", usually implies the first time.
-    // Let's set it if it's null.
-    
-    // Check current profile first
+    const userId = session.user.id;
+
+    // 1. Update User model if stacksPrincipal provided
+    if (stacksPrincipal) {
+      await prisma.user.update({
+        where: { id: userId },
+        data: { walletAddress: stacksPrincipal }
+      });
+    }
+
+    // 2. Update Profile model if btcXpub provided
+    const profileData: any = {};
+    if (btcXpub) profileData.btcXpub = btcXpub;
+
+    // Check current profile first to set timestamp
     const currentProfile = await prisma.profile.findUnique({
-      where: { userId: session.user.id }
+      where: { userId }
     });
 
-    if (!currentProfile) {
-       return NextResponse.json({ error: "Profile not found" }, { status: 404 });
+    if (currentProfile && !currentProfile.walletBindingTimestamp && (btcXpub || stacksPrincipal)) {
+        profileData.walletBindingTimestamp = new Date();
     }
 
-    if (!currentProfile.walletBindingTimestamp && (btcXpub || stacksPrincipal)) {
-        updateData.walletBindingTimestamp = new Date();
-    }
-
-    const updatedProfile = await prisma.profile.update({
-      where: { userId: session.user.id },
-      data: updateData,
-    });
+    const updatedProfile = currentProfile ? await prisma.profile.update({
+      where: { userId },
+      data: profileData,
+    }) : null;
 
     return NextResponse.json({ success: true, profile: updatedProfile });
   } catch (error) {
