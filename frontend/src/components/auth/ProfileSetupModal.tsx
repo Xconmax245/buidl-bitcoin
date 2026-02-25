@@ -16,10 +16,10 @@ import {
   Shield,
   CheckCircle,
   Languages,
-  Mail,
   AlertCircle,
   ImagePlus
 } from 'lucide-react';
+import { Avatar } from '@/components/ui/Avatar';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -44,20 +44,6 @@ type ProfileInput = z.infer<typeof profileSchema>;
 
 
 
-// ── Initials Avatar Generator ──────────────────────────────────────
-function InitialsAvatar({ name, size = 128 }: { name: string; size?: number }) {
-  const initials = name
-    ? name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2)
-    : '?';
-  return (
-    <div
-      className="flex items-center justify-center rounded-full bg-white/5 border border-white/10 text-white font-bold select-none"
-      style={{ width: size, height: size, fontSize: size * 0.36 }}
-    >
-      {initials}
-    </div>
-  );
-}
 
 // ════════════════════════════════════════════════════════════════════
 // MAIN COMPONENT
@@ -312,18 +298,12 @@ export default function ProfileSetupModal({
                   className="relative group cursor-pointer"
                   onClick={() => setShowAvatarPicker(!showAvatarPicker)}
                 >
-                  <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-2 border-dashed border-primary/30 flex items-center justify-center bg-white/5 hover:border-primary/60 transition-all duration-300 overflow-hidden">
-                    {currentAvatar ? (
-                      <img src={currentAvatar} alt="Avatar" className="w-full h-full object-cover rounded-full" />
-                    ) : watchAll.displayName ? (
-                      <InitialsAvatar name={watchAll.displayName} size={96} />
-                    ) : (
-                      <div className="flex flex-col items-center gap-1">
-                        <Camera className="text-primary" size={24} />
-                        <span className="text-[9px] text-primary font-medium uppercase tracking-wide">Choose Avatar</span>
-                      </div>
-                    )}
-                  </div>
+                    <Avatar 
+                      src={currentAvatar} 
+                      name={watchAll.displayName || '?'} 
+                      size={112} 
+                      className="border-primary/30" 
+                    />
                   <div className="absolute -bottom-1 -right-1 bg-primary text-black w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
                     <Camera size={12} />
                   </div>
@@ -347,8 +327,8 @@ export default function ProfileSetupModal({
                         Upload
                       </button>
                     </div>
-                    <div className="grid grid-cols-4 sm:grid-cols-5 gap-2">
-                      {DEFAULT_AVATARS.slice(0, 10).map((url, idx) => (
+                    <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
+                      {DEFAULT_AVATARS.map((url, idx) => (
                         <button
                           key={idx}
                           type="button"
@@ -619,13 +599,12 @@ export default function ProfileSetupModal({
             >
               {/* Profile Preview Card */}
               <div className="flex flex-col items-center text-center mb-2">
-                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border-2 border-primary/30 mb-3">
-                  {currentAvatar ? (
-                    <img src={currentAvatar} alt="Avatar" className="w-full h-full object-cover" />
-                  ) : (
-                    <InitialsAvatar name={watchAll.displayName || ''} size={96} />
-                  )}
-                </div>
+                  <Avatar 
+                    src={currentAvatar} 
+                    name={watchAll.displayName || ''} 
+                    size={96} 
+                    className="border-primary/30" 
+                  />
                 <h2 className="text-lg sm:text-xl font-bold text-white">{watchAll.displayName || 'Your Name'}</h2>
                 <p className="text-primary text-sm font-mono">@{watchAll.username || 'username'}</p>
                 {watchAll.bio && <p className="text-white/40 text-xs mt-1 max-w-xs">{watchAll.bio}</p>}

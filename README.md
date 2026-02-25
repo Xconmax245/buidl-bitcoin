@@ -1,8 +1,8 @@
-# 🛡️ Ironclad Protocol: Sovereign Bitcoin Savings
+# 🛡️ Ironclad Protocol: The Bitcoin-Native Independent Logic
 
 ![Ironclad Banner](frontend/public/assets/logo.png)
 
-**Ironclad** is a high-fidelity, non-custodial decentralized financial protocol engineered on the **Stacks L2** blockchain. It bridges the gap between Bitcoin's security and programmatic decentralized finance, offering users a "Sovereign Savings" environment where "HODL" is reinforced by Decidable Smart Contract logic.
+**Ironclad** is a premium, high-fidelity decentralized financial protocol engineered on the **Stacks L2** blockchain. It bridges the gap between Bitcoin's security and programmatic decentralized finance, offering users a "Self-Custodial Savings" environment where every "HODL" is reinforced by Decidable Smart Contract logic and Bitcoin finality.
 
 ---
 
@@ -12,148 +12,112 @@ In a world of volatile emotional trading, Ironclad provides a **Zero-Trust Insti
 
 ---
 
+## ✨ Conceivable Feature Suite
+
+### 1. 🔐 Multi-Layer Authentication Hub
+
+- **Wallet Handshake**: Proactive detection and automated authorization for Stacks (Leather/Xverse) and Bitcoin wallets.
+- **Protocol Handshake logic**: Intelligent session management that verifies cryptographic anchors upon entry.
+- **Social & Legacy Integration**: Production-ready Google OAuth 2.0 and encrypted Email/Password authentication.
+- **Unified Session Architecture**: Seamless transition between credential-based and wallet-based identity.
+
+### 2. 💎 Non-Custodial Savings Vaults (The Core)
+
+- **Cryptographic Commitments**: Lock BTC-native assets (sBTC, STX) in rules-based vaults without third-party risk.
+- **Time-Locked Enforcements**: Commitments are strictly governed by Stacks Block Height, ensuring mathematical certainty for savings.
+- **Penalty Severity Scaling**: User-defined penalty coefficients for early withdrawals (Simulation Level).
+- **Maturity Tracking**: Real-time progress bars and block-height countdowns for every active vault.
+- **Institutional Manifests**: Standardized technical specifications for every on-chain savings plan.
+
+### 3. 🧬 Identity Matrix & Personalization
+
+- **Identity Matrix**: A curated library of unique, protocol-themed avatars generated for user distinction.
+- **Initials-Based Fallbacks**: Dynamic SVG avatar generation for users without a selected matrix entry.
+- **Global Profile Sync**: Unified management of display names, bios, countries, timezones, and preferred currencies.
+- **Verified Reputation**: On-chain tracking of user standing, rank (Sentinel -> Knight -> Oracle), and achievements.
+- **Soulbound Achievements**: Unlock immutable protocol badges for loyalty milestones (Genesis Seal, Halving Survivor).
+
+### 4. 📜 Immutable Protocol Ledger
+
+- **Real-time Activity Stream**: Live monitoring of all L1/L2 transactions related to your protocol interaction.
+- **L1 Status Verification**: Direct integration with the Stacks blockchain to track pending/confirmed states.
+- **Protocol Intent Detection**: Automated labeling of transaction types (Peer Transfer, Protocol Integration, Contract Call).
+- **Hiro Explorer Integration**: Deep-linking to the Hiro Explorer for forensic inspection of every transaction hash.
+
+### 5. 📈 Live Network Intelligence
+
+- **Network Health Telemetry**: Real-time monitoring of mempool congestion, block-height, and L2 confirmation speeds.
+- **Yield Velocity Analytics**: Visualization of protocol-locked APY and institutional demand trends.
+- **Integrity Index**: Continuous verification of PoX (Proof-of-Transfer) cycle status and sBTC integration health.
+- **TVL Insights**: Dynamic assessment of the protocol's total value locked relative to previous cycles.
+
+### 6. ⚖️ Independent Governance Hub
+
+- **Weighted vSTX Voting**: Governance power calculated based on reputation-weighted holdings.
+- **Proposal Lifecycle**: Track, analyze, and vote on IP (Ironclad Proposal) targets.
+- **Governance Multipliers**: High reputation score acts as a multiplier for your protocol influence.
+- **Transparent Decisioning**: Fully on-chain voting records for all protocol parameter changes.
+
+### 7. 🛡️ Sovereign Security Center
+
+- **Local-First Encryption**: All sensitive data (wallets, phrases) are encrypted locally using military-grade AES-256 before storage.
+- **Deterministic Recovery**: Standard 12-word BIP39 recovery phrases for absolute self-sovereignty.
+- **Audit-Verified Architecture**: Design patterns optimized for Clarity's decidability to prevent re-entrancy and overflow bugs.
+- **Emergency Circuit Breaker**: Multi-sig controlled defensive logic for extreme network volatility events.
+
+### 8. 🎨 Premium Glassmorphic Design System
+
+- **Visual Excellence**: High-fidelity UI featuring dynamic ambient background gradients and glassmorphism.
+- **Mobile-First Response**: Fully optimized experience across mobile, tablet, and ultra-wide displays.
+- **Micro-Animations**: Extensive use of Framer Motion for liquid state transitions and hover interaction feedback.
+- **Dark-Mode Optimized**: Hand-crafted color palettes (Primary #A9D0C3, Background-Dark #0A0A0B) for 24/7 terminal comfort.
+
+---
+
 ## 🧱 Technical Architecture
 
-### 📜 Smart Contract Layer (Clarity)
+### 📜 Smart Contract Layer (Clarity 2.0)
 
-Our contracts are written in **Clarity 2.0**, a decidable language that prevents entire classes of smart contract bugs (e.g., re-entrancy).
+- **`savings.clar`**: Manages vault formation, funding, and release logic.
+- **`verification.clar`**: Confirms block height and protocol conditions.
+- **`registry.clar`**: The source of truth for protocol identity.
+- **`governance.clar`**: Manages the decentralized parameter selection.
 
-- **`savings.clar`**: The central engine. Manages vault creation, duration locking, and target definitions.
-- **`verification.clar`**: The integrity bridge. Integrates Oracle-signed BTC state and on-chain time conditions to verify unlock eligibility.
-- **`registry.clar`**: Protocol identity registry. Manages user registration and sovereign standing within the ecosystem.
-- **`governance.clar`**: Protocol parameters. Defines system-wide constants like `min-lock` duration and the global `paused` state.
-- **`emergency.clar`**: Defensive logic. Provides a multi-sig controlled "circuit-breaker" to protect user capital.
+### 🌐 Full-Stack Implementation
 
-### 🌐 Frontend Layer (Cutting-Edge Stack)
-
-A premium dashboard built with a **Mobile-First Glassmorphic** aesthetic.
-
-- **Engine**: React 19 + Next.js 16 (App Router).
-- **Styling**: Tailwind CSS v4 featuring professional design tokens and standard shades.
-- **Motion**: Framer Motion 12 for seamless state transitions and high-performance micro-animations.
-- **Persistence**: Dexie.js for low-latency local storage of protocol alerts and notifications.
-
-### 💾 Persistence Layer (Prisma & Postgres)
-
-While the protocol is non-custodial, we maintain a secure decentralized-ready backend for off-chain profile data.
-
-- **Identity**: Supabase Postgres with Prisma ORM.
-- **Models**:
-  - `User`: Core authentication entity (Email, Google, or Wallet).
-  - `Profile`: Sovereign metadata including:
-    - **`reputation`**: Protocol-verified loyalty score.
-    - **`rank`**: Tier-based ranking (`SENTINEL` -> `KNIGHT` -> `ORACLE`).
-    - **`achievements`**: Soulbound achievement matrix (JSON-verified).
-    - **`autoPersistence`**: Real-time cloud-sync heartbeat toggle.
-    - **`walletBindingTimestamp`**: Cryptographic anchor of identity maturity.
+- **Frontend**: Next.js 16 (App Router) + React 19.
+- **Styling**: Tailwind CSS v4 + Professional Design Tokens.
+- **ORM**: Prisma with Supabase PostgreSQL for profile metadata.
+- **Auth**: Next-Auth v5 (Beta) + Argon2/Bcrypt Password Hashing.
 
 ---
 
-## ✨ Key Protocol Features
+## 🔄 Usage Workflow
 
-### 1. 💎 Savings Vaults (Non-Custodial)
-
-Users seal assets in cryptographic vaults. Once sealed, assets are inaccessible until the **Stacks Block Height** reaches the predefined duration.
-
-- **Dynamic Lock Calculation**: 1 Month ≈ 4,320 Blocks.
-- **Target Tracking**: Real-time progress visualization against protocol goals.
-- **Institutional Manifests**: Exportable technical specifications of on-chain commitments.
-
-### 2. 🧬 Reputation 2.0: Proof of Loyalty
-
-The protocol features a data-driven reputation system that tracks your sovereign standing.
-
-- **Tiered Progression**: Advance through ranks based on vault duration and volume.
-- **Soulbound Badges**: Unlock immutable achievements like the "Genesis Seal" or "Halving Survivor".
-- **Perks**: High reputation grants collateral efficiency, priority peg-outs, and weighted governance power.
-
-### 3. ☁️ Cloud Heartbeat & Sync
-
-The **Ironclad Cloud** ensures your sovereign profile persists seamlessly across the protocol.
-
-- **Automatic Persistence**: Real-time broadcast of local changes to the cloud vault.
-- **Protocol Re-sync**: Force a clean state refresh directly from the Ironclad Protocol layer.
-- **Handshake Verification**: Multi-layered logging and error handling for synchronization integrity.
-
-### 4. ⚖️ Sovereign Governance
-
-Participate in the future of the protocol using reputation-weighted voting power (`vSTX`).
-
-- **Proposal Participation**: Cast sovereign votes on IP (Ironclad Proposal) targets.
-- **Weighted Weight**: Your reputation score acts as a multiplier for your governance influence.
+1.  **Handshake**: Connect your Stacks wallet (Leather/Xverse) or sign in with Google.
+2.  **Onboarding**: Complete the identity initialization to anchor your protocol profile.
+3.  **Sealing**: Define your duration, target amount, and asset allocation.
+4.  **Monitoring**: Track the immutable growth of your capital via the Dashboard and Ledger.
+5.  **Release**: Reclaim your assets once the blockchain reaches the verified maturity height.
 
 ---
 
-## 🔄 Protocol Usage Workflow
-
-### 1. The Onboarding Matrix
-
-- **Connect**: Utilize `Leather` or `Xverse` wallets via Stacks Connect.
-- **Initialize**: Navigate the multi-step onboarding flow to anchor your identity.
-- **Bind**: Synchronize your Bitcoin and Stacks addresses into a sovereign bundle.
-
-### 2. Sealing the Vault
-
-- **Action**: Click "Initialize Deposit" from the Sovereign Dashboard.
-- **Step 1 (Duration)**: Select a lock-in period (e.g., 144 Blocks, 2016 Blocks).
-- **Step 2 (Allocation)**: Define your target amount and penalty severity.
-- **Step 3 (Confirm)**: Execute the `create-plan` function. Your commitment is now inscribed.
-
-### 3. Verification & Settlement
-
-- Once the lock elapses, the **Verification Bridge** verifies your eligibility.
-- The protocol calls the `verify-time` contract to confirm the block height.
-- Markers for completion are updated on-chain, and assets are released.
-
----
-
-## 💻 Development & Deployment
-
-### Environment Configuration
-
-Ensure your `frontend/.env` includes:
-
-```env
-NEXT_PUBLIC_CONTRACT_ADDRESS=ST... # Stacks Contract address
-NEXT_PUBLIC_NETWORK=testnet        # 'mainnet' or 'testnet'
-DATABASE_URL=postgresql://...      # Postgres connection
-NEXTAUTH_SECRET=...               # Secret for session encryption
-```
-
-### Installation Suite
+## 💻 Installation
 
 ```bash
-# 1. Install Workspace Dependencies
+# Install dependencies
 npm install --legacy-peer-deps
 
-# 2. Synchronize Database Schema
+# Setup Database
 cd frontend
 npx prisma db push
 npx prisma generate
 
-# 3. Launch the Sovereign Interface
+# Run Development Server
 npm run dev
 ```
 
 ---
 
-## 🔒 Security Architecture
-
-- **Non-Custodial**: Neither the Ironclad team nor the Smart Contracts have access to your private keys.
-- **Atomic Operations**: All vault updates are atomic in the Stacks environment.
-- **Decidability**: Clarity language prevents common vulnerabilities like re-entrancy and integer overflows.
-
----
-
-## 🗺️ Engineering Roadmap
-
-- [x] **v1.4.2**: Sovereign UI Launch & Basic Vault Management.
-- [x] **v2.0.0**: Reputation Matrix & Cloud Sync Heartbeats.
-- [x] **v2.1.0**: Sovereign Governance Voting Primitives.
-- [ ] **v2.2.0**: sBTC integrated liquidity into Savings Vaults.
-- [ ] **v3.0.0**: Cross-Chain Sovereign Settlement layer.
-
----
-
 _Verified Ironclad Protocol v2.1.0_  
-_Ironclad Sovereign Protocol © 2026_
+_Ironclad Protocol © 2026_

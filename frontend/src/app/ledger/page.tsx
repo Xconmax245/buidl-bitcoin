@@ -31,7 +31,6 @@ export default function LedgerPage() {
   const { unreadCount, toggleOpen } = useNotifications();
   const { isLoading, isFullyOnboarded, redirectToOnboarding } = useOnboarding();
   const { data: session } = useSession();
-  const isDemo = session?.user?.email === "demo@ironclad.finance";
 
   const [ledger, setLedger] = useState<any[]>([]);
   const [isRefreshing, setIsRefreshing] = useState(false);

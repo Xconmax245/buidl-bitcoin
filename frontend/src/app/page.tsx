@@ -23,18 +23,18 @@ export default function Home() {
           <div className="lg:col-span-7 flex flex-col items-start text-left space-y-10">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border-primary/20 text-primary text-[10px] font-black uppercase tracking-[0.2em] shadow-lg shadow-primary/5">
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              Sovereign Testnet_ v1.2
+              Ironclad Testnet_ v1.2
             </div>
 
             <h1 className="font-tight font-black text-6xl md:text-7xl lg:text-8xl leading-[0.95] tracking-tighter text-white">
-              Sovereign <br />
+              Ironclad <br />
               <span className="text-transparent bg-clip-text bg-linear-to-r from-primary via-white to-primary-dark">
                 Bitcoin Core
               </span>
             </h1>
 
             <p className="text-lg md:text-xl text-muted-silver max-w-2xl font-light leading-relaxed">
-              Programmable, rules-based BTC commitments secured by the world's most robust settlement layer. Build sovereign wealth without custodial risk.
+              Programmable, rules-based BTC commitments secured by the world's most robust settlement layer. Build independent wealth without custodial risk.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center gap-5 pt-4 w-full sm:w-auto">
@@ -42,7 +42,7 @@ export default function Home() {
                 href="/onboarding"
                 className="w-full sm:w-auto px-10 py-5 rounded-2xl bg-linear-to-r from-primary to-primary-dark text-background-dark font-black text-xs uppercase tracking-widest hover:shadow-[0_0_30px_rgba(169,208,195,0.4)] transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-3 group"
               >
-                Go Sovereign
+                Go Ironclad
                 <span className="material-icons text-xl group-hover:translate-x-1.5 transition-transform font-bold">arrow_forward</span>
               </Link>
               <Link
@@ -109,7 +109,7 @@ export default function Home() {
             {/* Stat Card 3 */}
             <div className="absolute bottom-[5%] right-[5%] animate-float glass-panel p-6 rounded-3xl w-60 z-20 border-white/10 bg-white/5 backdrop-blur-2xl hover:border-primary/40 transition-all cursor-pointer group">
               <div className="flex items-center justify-between mb-4">
-                <span className="text-[10px] text-muted-silver font-black uppercase tracking-widest">Sovereign Yield</span>
+                <span className="text-[10px] text-muted-silver font-black uppercase tracking-widest">Protocol Yield</span>
                 <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-background-dark transition-colors">
                   <span className="material-icons text-sm">percent</span>
                 </div>
@@ -233,7 +233,7 @@ export default function Home() {
             
             <h2 className="text-3xl md:text-5xl font-tight font-black text-white mb-6 uppercase tracking-tighter">
               Join the Network <br />
-              <span className="text-primary italic">Sovereign Community</span>
+              <span className="text-primary italic">Ironclad Community</span>
             </h2>
             
             <p className="text-lg text-muted-silver mb-10 max-w-2xl mx-auto font-light leading-relaxed">

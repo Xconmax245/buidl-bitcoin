@@ -349,7 +349,7 @@ export const useContract = () => {
     addNotification({
       type: 'success',
       title: 'Vote Secured',
-      message: `Your sovereign vote on IP-${proposalId} has been committed to the ledger.`
+      message: `Your protocol vote on IP-${proposalId} has been committed to the ledger.`
     });
   }, [addNotification]);
 

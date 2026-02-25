@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 export function Navbar() {
   const { data: session } = useSession();
   const { address, hasWallet } = useWallet();
-  const isDemo = session?.user?.email === "demo@ironclad.finance" || (!address && hasWallet === false);
+  const isDemo = false;
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 px-4 md:px-6 py-6 transition-all duration-300">

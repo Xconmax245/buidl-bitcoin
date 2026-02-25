@@ -22,7 +22,7 @@ import Link from "next/link";
 const STEPS = [
   {
     id: "01",
-    title: "Sovereign Intent",
+    title: "Independent Intent",
     desc: "Define your commitment parameters: Lock duration (Blocks), target sBTC volume, and maturity beneficiary. The protocol generates a deterministic rule-set.",
     icon: Settings,
     type: "INPUT_STREAM",
@@ -80,7 +80,7 @@ export default function HowItWorksPage() {
               </motion.div>
               <h2 className="text-4xl md:text-6xl font-black text-white leading-tight uppercase tracking-tighter">
                 Anatomy of <br />
-                <span className="text-transparent bg-clip-text bg-linear-to-r from-primary to-primary-dark italic">Sovereign Rules</span>
+                <span className="text-transparent bg-clip-text bg-linear-to-r from-primary to-primary-dark italic">Independent Rules</span>
               </h2>
               <p className="text-lg text-slate-500 max-w-2xl mx-auto font-light leading-relaxed wrap-break-word">
                 Ironclad maps Bitcoin's finality to programmable logic. Follow the technical lifecycle of a trustless savings commitment.

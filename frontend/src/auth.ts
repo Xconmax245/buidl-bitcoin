@@ -55,34 +55,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           };
         }
 
-        if (credentials?.loginType === 'demo') {
-          let user = await prisma.user.findUnique({
-            where: { email: "demo@ironclad.finance" },
-            include: { profile: true }
-          });
-
-          if (!user) {
-            user = await prisma.user.create({
-              data: {
-                email: "demo@ironclad.finance",
-                authProvider: 'EMAIL',
-                profile: {
-                  create: {
-                    username: "demo_guest",
-                    displayName: "Demo Guest",
-                  }
-                }
-              },
-              include: { profile: true }
-            });
-          }
-
-          return {
-            id: user.id,
-            email: user.email,
-            name: user.profile?.displayName || "Demo Guest",
-          };
-        }
 
         const validated = loginSchema.safeParse(credentials);
 

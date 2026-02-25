@@ -70,7 +70,7 @@ export default function PhilosophyPage() {
                  <div className="space-y-6">
                     {[
                       { icon: Lock, title: "Deterministic Custody", desc: "No human has the keys. Only the protocol, governed by your signed intent." },
-                      { icon: Fingerprint, title: "Sovereign Identity", desc: "Your savings are linked to your keys, not your name. Privacy is protocol-native." },
+                      { icon: Fingerprint, title: "Independent Identity", desc: "Your savings are linked to your keys, not your name. Privacy is protocol-native." },
                       { icon: Gavel, title: "Mathematical Consensus", desc: "Rules are enforced by wait-times and hashpower, not legal filings." },
                     ].map((m, i) => (
                       <div key={i} className="flex gap-6 items-start group">
@@ -91,7 +91,7 @@ export default function PhilosophyPage() {
             <section className="space-y-10">
                <div className="text-center">
                   <h3 className="text-3xl font-black text-white tracking-tighter uppercase mb-2">Systems Analysis</h3>
-                  <p className="text-slate-500 text-sm italic">Comparing centralized liability with sovereign protocol assets.</p>
+                  <p className="text-slate-500 text-sm italic">Comparing centralized liability with secure protocol assets.</p>
                </div>
 
                <div className="glass-panel rounded-[2.5rem] border-white/5 overflow-hidden">
@@ -132,7 +132,7 @@ export default function PhilosophyPage() {
                   <div className="w-20 h-20 bg-primary/10 rounded-4xl flex items-center justify-center mx-auto border border-primary/20 mb-8">
                      <BarChart3 size={40} className="text-primary" />
                   </div>
-                  <h3 className="text-4xl font-black text-white leading-tight italic">Transitioning to <br />Sovereign Credit.</h3>
+                  <h3 className="text-4xl font-black text-white leading-tight italic">Transitioning to <br />Independent Credit.</h3>
                   <p className="text-lg text-slate-400 font-light leading-relaxed">
                     By participating in the Ironclad Protocol, you aren't just saving Bitcoin; you are building a <span className="text-white font-bold">Resilience Reputation</span> that persists across the network state.
                   </p>
@@ -141,7 +141,7 @@ export default function PhilosophyPage() {
                         href="/vault/setup" 
                         className="inline-flex px-12 py-5 bg-primary text-background-dark font-black text-sm uppercase tracking-widest rounded-3xl hover:bg-white transition-all shadow-2xl shadow-primary/30 items-center gap-3"
                      >
-                        Claim Your Sovereignty
+                        Claim Your Independence
                         <ArrowRight size={20} />
                      </Link>
                   </div>

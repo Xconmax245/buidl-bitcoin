@@ -29,6 +29,7 @@ import { useOnboarding } from "@/hooks/useOnboarding";
 import { useWallet } from "@/providers/WalletProvider";
 import { useNotifications } from "@/providers/NotificationProvider";
 import { toast } from "sonner";
+import { Avatar } from "@/components/ui/Avatar";
 import { COUNTRIES, TIMEZONES, CURRENCIES, LANGUAGES, DEFAULT_AVATARS } from "@/lib/constants";
 
 export default function SettingsPage() {
@@ -49,14 +50,6 @@ export default function SettingsPage() {
     setMounted(true);
   }, []);
 
-  const presetAvatars = [
-    "https://api.dicebear.com/7.x/shapes/svg?seed=protocol1&backgroundColor=0f172a&shapeColor=a9d0c3",
-    "https://api.dicebear.com/7.x/shapes/svg?seed=protocol2&backgroundColor=0f172a&shapeColor=a9d0c3",
-    "https://api.dicebear.com/7.x/shapes/svg?seed=protocol3&backgroundColor=0f172a&shapeColor=a9d0c3",
-    "https://api.dicebear.com/7.x/shapes/svg?seed=protocol4&backgroundColor=0f172a&shapeColor=a9d0c3",
-    "https://api.dicebear.com/7.x/shapes/svg?seed=protocol5&backgroundColor=0f172a&shapeColor=a9d0c3",
-    "https://api.dicebear.com/7.x/shapes/svg?seed=protocol6&backgroundColor=0f172a&shapeColor=a9d0c3",
-  ];
 
   useEffect(() => {
     if (!isLoading && isFullyOnboarded === false) {
@@ -92,7 +85,7 @@ export default function SettingsPage() {
       } else {
         console.warn("[Protocol] Identity matrix missing. Initializing fallback.");
         setProfile({
-          displayName: session?.user?.name || "Sovereign User",
+          displayName: session?.user?.name || "Ironclad User",
           username: "",
           avatarUrl: session?.user?.image || "",
           bio: "",
@@ -263,13 +256,12 @@ export default function SettingsPage() {
                     <div className="space-y-10">
                       <div className="flex items-center gap-6 pb-8 border-b border-white/5">
                         <div className="relative group">
-                          <div className="w-24 h-24 rounded-4xl bg-glass border-2 border-primary/20 flex items-center justify-center overflow-hidden transition-transform group-hover:scale-105">
-                            {profile.avatarUrl ? (
-                              <img src={profile.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
-                            ) : (
-                              <User size={40} className="text-primary opacity-50" />
-                            )}
-                          </div>
+                          <Avatar 
+                            src={profile.avatarUrl} 
+                            name={profile.displayName || 'User'} 
+                            size={96} 
+                            className="bg-glass border-2 border-primary/20 transition-transform group-hover:scale-105" 
+                          />
                            <button 
                              onClick={() => setIsAvatarModalOpen(true)}
                              className="absolute -bottom-2 -right-2 p-2.5 bg-primary text-background-dark rounded-xl shadow-xl hover:scale-110 transition-transform"
@@ -652,7 +644,7 @@ export default function SettingsPage() {
           </div>
 
           <footer className="mt-20 pt-10 border-t border-white/5 text-center">
-             <p className="text-[10px] text-slate-600 font-bold uppercase tracking-[0.3em]">Ironclad Sovereign Protocol v1.4.2-stable</p>
+             <p className="text-[10px] text-slate-600 font-bold uppercase tracking-[0.3em]">Ironclad Protocol v1.4.2-stable</p>
           </footer>
         </div>
       </main>
@@ -675,8 +667,8 @@ export default function SettingsPage() {
             >
               <h2 className="text-2xl font-black text-white uppercase tracking-tighter mb-6">Select Identity Matrix</h2>
               
-              <div className="grid grid-cols-3 gap-4 mb-8">
-                {presetAvatars.map((url, i) => (
+              <div className="grid grid-cols-4 gap-3 mb-8">
+                {DEFAULT_AVATARS.map((url, i) => (
                   <button
                     key={i}
                     onClick={() => {

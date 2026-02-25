@@ -30,7 +30,7 @@ export const TIERS: TierInfo[] = [
   },
   { 
     level: 4, 
-    label: "Sovereign", 
+    label: "Ironclad", 
     color: "text-primary", 
     minPoints: 160,
     benefits: ["+2.5% Yield bonus", "Maximum network weight", "Zero protocol fees"]
@@ -43,7 +43,7 @@ export const TIERS: TierInfo[] = [
  * 
  * Example:
  * 12 months @ 25% penalty = (12 * 2) + 25 = 49 (Level 2: Strategic)
- * 48 months @ 70% penalty = (48 * 2) + 70 = 166 (Level 4: Sovereign)
+ * 48 months @ 70% penalty = (48 * 2) + 70 = 166 (Level 4: Ironclad)
  */
 export function calculateTier(durationMonths: number, penaltySeverity: number): TierInfo {
   const score = (durationMonths * 2) + penaltySeverity;

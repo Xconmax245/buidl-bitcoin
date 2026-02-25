@@ -19,7 +19,7 @@ export function AllocationStep({ duration, onNext, onPrev, address }: Allocation
   const [prices, setPrices] = useState<Record<string, number>>({ 'sBTC': 64000, 'STX': 1.8, 'Bitflow': 0.5, 'USDCx': 1 });
   
   const assets = [
-    { id: 'sBTC', name: 'Sovereign BTC', principal: 'ST2QTHF5ANDT876XA3T0V032S1QWE9AGCN76PFFWM.sbtc-token', unit: 'satoshi', factor: 100000000, symbol: 'BTC', geckoId: 'bitcoin' },
+    { id: 'sBTC', name: 'Ironclad BTC', principal: 'ST2QTHF5ANDT876XA3T0V032S1QWE9AGCN76PFFWM.sbtc-token', unit: 'satoshi', factor: 100000000, symbol: 'BTC', geckoId: 'bitcoin' },
     { id: 'STX', name: 'Stacks Native', principal: 'STX', unit: 'microstx', factor: 1000000, symbol: 'STX', geckoId: 'blockstack' },
     { id: 'Bitflow', name: 'Bitflow Yield', principal: 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bitflow-token', unit: 'share', factor: 1000000, symbol: 'BF', geckoId: 'stxeur' }, // Placeholder gecko
     { id: 'USDCx', name: 'USDC (Cross-chain)', principal: 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.usdc-token', unit: 'cent', factor: 1000000, symbol: 'USDC', geckoId: 'usd-coin' },

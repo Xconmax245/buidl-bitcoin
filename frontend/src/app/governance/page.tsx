@@ -53,7 +53,7 @@ const PROPOSALS = [
   {
     id: "IRP-039",
     title: "Protocol Fee Structure Revision v2.1",
-    desc: "Updating the base protocol fee from 0.5% to 0.45% for commitments exceeding 1 BTC to incentivize larger sovereign deposits.",
+    desc: "Updating the base protocol fee from 0.5% to 0.45% for commitments exceeding 1 BTC to incentivize larger protocol deposits.",
     status: "PASSED",
     votes: { for: 32000, against: 89000 },
     quorum: 100,
@@ -134,7 +134,7 @@ export default function GovernancePage() {
                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
                  <div className="space-y-2">
                     <h2 className="text-2xl lg:text-3xl font-black text-white tracking-tighter uppercase flex items-center gap-3 italic">
-                      Sovereign Proposals
+                      Independent Proposals
                     </h2>
                     <p className="text-slate-500 text-xs italic">Verification required for reputation-weighted voting.</p>
                  </div>
@@ -304,7 +304,7 @@ export default function GovernancePage() {
                     <h4 className="font-black text-white uppercase tracking-tighter italic">Active Warning</h4>
                   </div>
                   <p className="text-xs text-slate-500 leading-relaxed font-light">
-                    Governance tokens are currently <span className="text-amber-500 font-bold underline underline-offset-4 decoration-amber-500/30">locked for distribution</span>. Initial participation is restricted to holders with Sovereign Reputation scores exceeding <span className="text-white font-bold">1,000</span>.
+                    Governance tokens are currently <span className="text-amber-500 font-bold underline underline-offset-4 decoration-amber-500/30">locked for distribution</span>. Initial participation is restricted to holders with Protocol Reputation scores exceeding <span className="text-white font-bold">1,000</span>.
                   </p>
                   <button className="w-full py-4 bg-white/2 border border-white/5 text-slate-400 text-[10px] font-black rounded-2xl hover:text-white hover:bg-white/5 transition-all uppercase tracking-widest active:scale-95">
                     Request Early Access

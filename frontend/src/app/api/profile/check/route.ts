@@ -10,11 +10,6 @@ export async function GET() {
   }
 
   try {
-    const isDemo = session.user?.email === "demo@ironclad.finance";
-    
-    if (isDemo) {
-      return NextResponse.json({ exists: true });
-    }
 
     const profile = await prisma.profile.findUnique({
       where: { userId: session.user.id }

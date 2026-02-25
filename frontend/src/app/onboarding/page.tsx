@@ -35,16 +35,15 @@ export default function OnboardingPage() {
     checkProfile();
   }, [session, status]);
 
-  // Redirect if already fully onboarded or if it's a demo session that doesn't require a new vault
+  // Redirect if already fully onboarded
   useEffect(() => {
-    const isDemo = session?.user?.email === "demo@ironclad.finance";
     const isReady = status === "authenticated" && hasProfile === true && !walletLoading;
     
-    if (isReady && (hasWallet && isUnlocked || isDemo)) {
+    if (isReady && (hasWallet && isUnlocked)) {
       console.log("Onboarding complete, navigating to dashboard...");
       router.push("/dashboard");
     }
-  }, [status, hasProfile, hasWallet, isUnlocked, walletLoading, router, session]);
+  }, [status, hasProfile, hasWallet, isUnlocked, walletLoading, router]);
 
   if (status === "loading" || (status === "authenticated" && hasProfile === null)) {
     return (

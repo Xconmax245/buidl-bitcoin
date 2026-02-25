@@ -63,7 +63,7 @@ export default function AnalyticsPage() {
     fetchRealData();
   }, []);
 
-  const sovereignTotal = calcBtc * Math.pow(1 + ironcladApy/100, calcYears);
+  const ironcladTotal = calcBtc * Math.pow(1 + ironcladApy/100, calcYears);
   const bankTotal = calcBtc * Math.pow(1 + bankApy/100, calcYears);
 
   // SVG Chart Generation logic
@@ -335,7 +335,7 @@ export default function AnalyticsPage() {
                            <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">Strategy Engine</span>
                         </div>
                         <h2 className="text-3xl md:text-5xl font-black text-white leading-tight">
-                           Project Your <span className="text-primary">Sovereign Growth</span>.
+                           Project Your <span className="text-primary">Independent Growth</span>.
                         </h2>
                         <p className="text-slate-400 mt-6 leading-relaxed max-w-md">
                            Calculate the delta between institutional Bitcoin commitments and legacy financial preservation models.
@@ -370,11 +370,11 @@ export default function AnalyticsPage() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                      <div className="p-8 rounded-[2.5rem] bg-primary/5 border border-primary/20 space-y-4">
-                        <p className="text-[10px] font-bold text-primary uppercase tracking-[0.2em]">Sovereign Standing</p>
-                        <h4 className="text-2xl font-black text-white tracking-tight">{sovereignTotal.toFixed(4)} <span className="text-xs font-bold">BTC</span></h4>
+                        <p className="text-[10px] font-bold text-primary uppercase tracking-[0.2em]">Ironclad Standing</p>
+                        <h4 className="text-2xl font-black text-white tracking-tight">{ironcladTotal.toFixed(4)} <span className="text-xs font-bold">BTC</span></h4>
                         <div className="pt-4 border-t border-primary/10">
                            <p className="text-[9px] text-slate-500 uppercase font-black">Growth Yield</p>
-                           <p className="text-sm font-bold text-green-400">+{((sovereignTotal - calcBtc) / calcBtc * 100).toFixed(1)}%</p>
+                           <p className="text-sm font-bold text-green-400">+{((ironcladTotal - calcBtc) / calcBtc * 100).toFixed(1)}%</p>
                         </div>
                      </div>
                      <div className="p-8 rounded-[2.5rem] bg-white/2 border border-white/5 space-y-4 opacity-60">
@@ -387,7 +387,7 @@ export default function AnalyticsPage() {
                      </div>
                      <div className="md:col-span-2 p-6 rounded-4xl bg-white/2 border border-white/5 flex items-center justify-between">
                         <p className="text-xs font-medium text-slate-400 italic">Total Protocol Advantage:</p>
-                        <p className="text-lg font-black text-white">{(sovereignTotal - bankTotal).toFixed(4)} <span className="text-xs text-primary">BTC DELTA</span></p>
+                        <p className="text-lg font-black text-white">{(ironcladTotal - bankTotal).toFixed(4)} <span className="text-xs text-primary">BTC DELTA</span></p>
                      </div>
                   </div>
                </div>
@@ -412,7 +412,7 @@ export default function AnalyticsPage() {
                 <thead className="bg-white/2 border-b border-white/5">
                   <tr>
                     <th className="px-8 py-5 text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em]">Transaction Type</th>
-                    <th className="px-8 py-5 text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em]">Sovereign Identity</th>
+                    <th className="px-8 py-5 text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em]">Verified Identity</th>
                     <th className="px-8 py-5 text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em]">Seal Amount</th>
                     <th className="px-8 py-5 text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em]">Protocol Tier</th>
                     <th className="px-8 py-5 text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] text-right">Age</th>
@@ -470,7 +470,7 @@ export default function AnalyticsPage() {
                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Protocol Sync: 0s ago</span>
                </div>
             </div>
-            <p className="text-[10px] text-slate-600 font-bold uppercase tracking-[0.3em]">Ironclad Sovereign Protocol v1.4.2-stable</p>
+            <p className="text-[10px] text-slate-600 font-bold uppercase tracking-[0.3em]">Ironclad Protocol v1.4.2-stable</p>
           </footer>
         </div>
       </main>

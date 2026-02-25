@@ -52,10 +52,10 @@ export default function DashboardPage() {
   const { status, isLoading, isFullyOnboarded, redirectToOnboarding } = useOnboarding();
   const router = useRouter();
   const { data: session } = useSession();
-  const isDemo = session?.user?.email === "demo@ironclad.finance" || (!address && hasWallet === false);
+  const isDemo = false;
 
   const fetchData = useCallback(async () => {
-    if ((address || isDemo) && (walletType === 'stacks' || isDemo)) {
+    if (address && walletType === 'stacks') {
       setIsRefreshing(true);
       try {
         const [planData, currentHeight, priceRes, networkTxs] = await Promise.all([
@@ -121,7 +121,7 @@ export default function DashboardPage() {
             mempool: mStatus,
             tvlPercent: 80 + (Number(currentHeight) % 40) / 10,
             yield: "5.2% APY",
-            integrity: poxInfo?.current_cycle.is_active ? "Optimal" : "Sovereign Only"
+            integrity: poxInfo?.current_cycle.is_active ? "Optimal" : "Independent Only"
           }));
 
           if (poxInfo) {
@@ -208,7 +208,7 @@ export default function DashboardPage() {
 
   const satoshisToBTC = (sats: number) => (sats / 100000000).toFixed(8);
   const formattedBalance = satoshisToBTC(balance);
-  const displayAddress = address ? `${address.slice(0, 6)}...${address.slice(-4)}` : "Demo_Wallet";
+  const displayAddress = address ? `${address.slice(0, 6)}...${address.slice(-4)}` : "Not Found";
 
   // Progress Calcs
   const { progress, remainingBlocks, unlockHeight } = useMemo(() => {
@@ -232,7 +232,7 @@ export default function DashboardPage() {
     );
   }
 
-  if (!hasWallet && !isDemo) return null;
+  if (!hasWallet) return null;
 
   return (
     <div className="bg-background-dark font-display text-slate-200 min-h-screen lg:h-screen flex flex-col lg:flex-row overflow-y-auto lg:overflow-hidden selection:bg-primary selection:text-background-dark">
@@ -318,7 +318,7 @@ export default function DashboardPage() {
                      <div className="space-y-8">
                         <div>
                            <div className="flex items-center gap-2 mb-3">
-                              <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Sovereign Liquidity</span>
+                              <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Independent Liquidity</span>
                               <ShieldCheck size={14} className="text-primary" />
                            </div>
                            <div className="flex items-baseline gap-2 md:gap-4 flex-wrap min-w-0">
@@ -520,7 +520,7 @@ export default function DashboardPage() {
                        <div className="space-y-3">
                           <h3 className="text-2xl font-black text-white tracking-tight uppercase">No Active Vaults</h3>
                           <p className="text-slate-500 max-w-sm mx-auto text-xs leading-relaxed">
-                            Initialize a multi-asset savings commitment to diversify your sovereign portfolio.
+                            Initialize a multi-asset savings commitment to diversify your independent portfolio.
                           </p>
                        </div>
                        <Link 
@@ -703,7 +703,7 @@ export default function DashboardPage() {
             </div>
             
             <footer className="mt-12 py-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 bg-transparent">
-              <p className="text-[10px] font-bold text-slate-600 uppercase tracking-[0.3em]">Ironclad Sovereign Protocol © 2026</p>
+              <p className="text-[10px] font-bold text-slate-600 uppercase tracking-[0.3em]">Ironclad Protocol © 2026</p>
               <div className="flex space-x-8">
                 {['Documentation', 'Security', 'Github'].map(link => (
                   <Link key={link} href={`/${link.toLowerCase()}`} className="text-[10px] font-black text-slate-500 hover:text-primary transition-all uppercase tracking-widest">{link}</Link>

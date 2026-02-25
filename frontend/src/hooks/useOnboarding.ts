@@ -19,9 +19,7 @@ export function useOnboarding() {
         return;
       }
 
-      const isDemo = session?.user?.email === "demo@ironclad.finance";
-
-      if (!hasWallet && !isDemo) {
+      if (!hasWallet) {
         setIsFullyOnboarded(false);
         return;
       }
@@ -32,7 +30,7 @@ export function useOnboarding() {
           const data = await res.json();
           setHasProfile(data.exists);
           // Demo users are fully onboarded if they have a profile (which they always do)
-          setIsFullyOnboarded(data.exists && (isDemo || (hasWallet && isUnlocked)));
+          setIsFullyOnboarded(data.exists && hasWallet && isUnlocked);
         } else {
           setHasProfile(false);
           setIsFullyOnboarded(false);

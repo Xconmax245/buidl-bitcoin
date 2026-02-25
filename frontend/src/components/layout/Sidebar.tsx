@@ -7,6 +7,7 @@ import { useWallet } from "@/providers/WalletProvider";
 import { useEffect, useState } from "react";
 import { Menu, X, Home, Lock, Handshake, ShieldCheck, BarChart3, Settings, LogOut, History as HistoryIcon, Zap, Globe, Book } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Avatar } from "@/components/ui/Avatar";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -135,16 +136,15 @@ export function Sidebar() {
                {/* Mobile Profile Card */}
                <div className="mt-8 p-5 bg-white/5 rounded-3xl border border-white/5 space-y-4">
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl overflow-hidden border border-primary/20 bg-primary/10 flex items-center justify-center shrink-0">
-                      {avatarUrl ? (
-                        <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
-                      ) : (
-                        <span className="text-primary font-bold text-sm">{initials}</span>
-                      )}
-                    </div>
+                    <Avatar 
+                      src={avatarUrl} 
+                      name={displayName} 
+                      size={48} 
+                      className="border-primary/20 shrink-0" 
+                    />
                     <div className="min-w-0">
                       <p className="text-sm font-bold text-white truncate">{displayName}</p>
-                      <p className="text-[10px] text-slate-500 font-mono truncate">@{username || 'sovereign'}</p>
+                      <p className="text-[10px] text-slate-500 font-mono truncate">@{username || 'ironclad'}</p>
                     </div>
                   </div>
                   
@@ -267,16 +267,15 @@ export function Sidebar() {
             <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full blur-2xl -mr-12 -mt-12 group-hover:bg-primary/10 transition-colors" />
             
             <div className="flex items-center gap-3 relative z-10 mb-4">
-              <div className="w-10 h-10 rounded-xl overflow-hidden border border-primary/20 bg-primary/10 flex items-center justify-center shrink-0">
-                {avatarUrl ? (
-                  <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
-                ) : (
-                  <span className="text-primary font-bold text-xs">{initials}</span>
-                )}
-              </div>
+              <Avatar 
+                src={avatarUrl} 
+                name={displayName} 
+                size={40} 
+                className="border-primary/20 shrink-0" 
+              />
               <div className="min-w-0">
                 <p className="text-xs font-bold text-white truncate">{displayName}</p>
-                <p className="text-[10px] text-slate-500 font-mono truncate">@{username || 'sovereign'}</p>
+                <p className="text-[10px] text-slate-500 font-mono truncate">@{username || 'ironclad'}</p>
               </div>
             </div>
 

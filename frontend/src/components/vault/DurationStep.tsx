@@ -15,7 +15,7 @@ const PRESETS = [
   { label: "1 Month", value: 1, tier: "ASSOCIATE", premium: "Base Scale", blocks: "~4,320" },
   { label: "6 Months", value: 6, tier: "STRATEGIC", premium: "+0.5% APY", blocks: "~25,920" },
   { label: "1 Year", value: 12, tier: "STRATEGIC++", premium: "+1.2% APY", preferred: true, blocks: "~51,840" },
-  { label: "4 Years", value: 48, tier: "SOVEREIGN", premium: "+2.5% APY", blocks: "~207,360" },
+  { label: "4 Years", value: 48, tier: "IRONCLAD", premium: "+2.5% APY", blocks: "~207,360" },
 ];
 
 export function DurationStep({ onNext, onPrev }: DurationStepProps) {

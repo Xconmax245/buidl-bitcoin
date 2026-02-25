@@ -22,47 +22,54 @@ import { signIn, useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { loginSchema, signupSchema, type LoginInput, type SignupInput } from '@/lib/auth/validation';
 import { useWallet } from '@/providers/WalletProvider';
+import { Avatar } from '@/components/ui/Avatar';
 
 interface AuthPageProps {
   onSuccess?: () => void;
   hideHeader?: boolean;
+  isLogin?: boolean;
 }
 
-export default function AuthPage({ onSuccess, hideHeader = false }: AuthPageProps) {
-  const [isLogin, setIsLogin] = useState(true);
+export default function AuthPage({ 
+  onSuccess, 
+  hideHeader = false,
+  isLogin: initialIsLogin = true 
+}: AuthPageProps) {
+  const router = useRouter();
+  const { data: session, status: sessionStatus } = useSession();
+  const { connectStacks, hasWallet, isUnlocked, unlockWallet, deleteWallet, address, isLoading: walletLoading } = useWallet();
+  
+  const [isLogin, setIsLogin] = useState(initialIsLogin);
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isAuthAttempting, setIsAuthAttempting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [pendingUserEmail, setPendingUserEmail] = useState<string>('');
-
-  const router = useRouter();
-  const { connectStacks, hasWallet, isUnlocked, unlockWallet, deleteWallet, address, isLoading: walletLoading } = useWallet();
-  const { data: session, status: sessionStatus } = useSession();
-
-  const handleHardReset = async () => {
-    if (confirm("WARNING: This will permanently delete your local vault and log you out. You MUST have your 12-word recovery phrase to regain access. Continue?")) {
-      await deleteWallet();
-      await signOut({ callbackUrl: '/' });
-    }
-  };
 
   const isUnlockPhase = hasWallet && !isUnlocked && sessionStatus === "authenticated";
 
   React.useEffect(() => {
-    // Only attempt auto-login if not already authenticated
-    if (hasWallet && address && !walletLoading && sessionStatus === "unauthenticated") {
+    // Only attempt auto-login if not already authenticated and not currently attempting
+    if (hasWallet && address && !walletLoading && sessionStatus === "unauthenticated" && !isAuthAttempting) {
+      console.log("[Auth] Protocol detected in environment. Initiating handshake...");
+      setIsAuthAttempting(true);
       signIn('credentials', { 
         address, 
         loginType: 'wallet',
-        redirect: false 
+        redirect: false,
+        callbackUrl: '/onboarding'
       }).then((res) => {
         if (!res?.error) {
+           console.log("[Auth] Handshake verified.");
            if (onSuccess) onSuccess();
            else router.push('/onboarding');
+        } else {
+           console.error("[Auth] Handshake refused:", res.error);
+           setError("Handshake refused by protocol. Please try again manually.");
+           setIsAuthAttempting(false);
         }
       });
     }
-  }, [hasWallet, address, walletLoading, sessionStatus, onSuccess, router]);
+  }, [hasWallet, address, walletLoading, sessionStatus, onSuccess, router, isAuthAttempting]);
 
   const {
     register,
@@ -73,6 +80,13 @@ export default function AuthPage({ onSuccess, hideHeader = false }: AuthPageProp
     resolver: zodResolver(isLogin ? loginSchema : signupSchema),
     mode: 'onChange'
   });
+
+  const handleHardReset = async () => {
+    if (confirm("WARNING: This will permanently delete your local vault and log you out. You MUST have your 12-word recovery phrase to regain access. Continue?")) {
+      await deleteWallet();
+      await signOut({ callbackUrl: '/' });
+    }
+  };
 
   const onSubmit = async (data: any) => {
     setIsLoading(true);
@@ -390,28 +404,25 @@ export default function AuthPage({ onSuccess, hideHeader = false }: AuthPageProp
                 </button>
                 <button 
                   type="button"
-                  onClick={() => connectStacks()}
-                  className="flex items-center justify-center gap-3 bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all rounded-2xl py-4 text-sm font-bold text-white group"
-                >
-                  <WalletIcon size={20} className="text-white group-hover:scale-110 transition-transform" />
-                  Wallet
-                </button>
- 
-                <button 
-                  type="button"
-                  onClick={async () => {
-                    if (hasWallet) {
-                      await deleteWallet(); // Clean start for demo
-                    }
-                    signIn('credentials', { 
-                        loginType: 'demo',
+                  onClick={() => {
+                    if (hasWallet && address) {
+                      // Manual trigger for handshake if auto failed
+                      console.log("[Auth] Manual handshake requested.");
+                      setIsAuthAttempting(true);
+                      signIn('credentials', { 
+                        address, 
+                        loginType: 'wallet',
                         callbackUrl: '/onboarding'
-                    });
+                      });
+                    } else {
+                      connectStacks();
+                    }
                   }}
-                  className="col-span-2 flex items-center justify-center gap-2 bg-primary/10 border border-primary/20 hover:bg-primary/20 transition-all rounded-2xl py-4 text-xs font-bold text-primary uppercase tracking-[0.2em]"
+                  className="flex items-center justify-center gap-3 bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all rounded-2xl py-4 text-sm font-bold text-white group disabled:opacity-50"
+                  disabled={isAuthAttempting}
                 >
-                  <Shield size={14} />
-                  Enter as Demo Guest
+                  <WalletIcon size={20} className={`text-white transition-transform ${isAuthAttempting ? 'animate-pulse' : 'group-hover:scale-110'}`} />
+                  {isAuthAttempting ? 'Authorizing...' : (hasWallet && address ? 'Authorize Wallet' : 'Wallet')}
                 </button>
               </div>
             )}

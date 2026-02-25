@@ -67,7 +67,7 @@ const ACHIEVEMENTS_TEMPLATE = [
   },
   {
     id: "AC-004",
-    title: "Sovereign Node",
+    title: "Protocol Node",
     desc: "Contributed to 5 on-chain governance proposals with reputation-weighted voting.",
     status: "LOCKED",
     progress: 0,
@@ -204,7 +204,7 @@ export default function ReputationPage() {
         body: JSON.stringify({ 
           reputation: newRep, 
           achievements: dbAchievements,
-          rank: newRep > 500 ? "SOVEREIGN_KNIGHT" : "IRON_LEVEL_SENTINEL"
+          rank: newRep > 500 ? "IRON_KNIGHT" : "IRON_LEVEL_SENTINEL"
         })
       });
 
@@ -262,7 +262,7 @@ export default function ReputationPage() {
       <main className="flex-1 flex flex-col h-screen overflow-hidden relative">
         <header className="h-24 hidden lg:flex items-center justify-between px-10 border-b border-white/5 bg-background-dark/80 backdrop-blur-xl z-20 sticky top-0">
           <div className="flex items-center space-x-6">
-            <h1 className="text-2xl font-bold text-white tracking-tight">Sovereign Reputation</h1>
+            <h1 className="text-2xl font-bold text-white tracking-tight">Protocol Reputation</h1>
             <div className="h-6 w-px bg-white/10" />
             <div className="flex items-center gap-2 text-xs font-bold text-slate-500 uppercase tracking-[0.2em]">
               <Dna size={14} className="text-primary" />
@@ -309,7 +309,7 @@ export default function ReputationPage() {
                 </div>
                 <div className="mt-6 text-center">
                    <p className="text-xs font-bold text-slate-500 uppercase tracking-[0.2em] mb-1">Rank Progress</p>
-                   <p className="text-sm text-white font-medium">{repData.reputation}/{nextRankScore} to <span className="text-primary">{repData.reputation >= 500 ? 'Immortal Oracle' : 'Sovereign Knight'}</span></p>
+                   <p className="text-sm text-white font-medium">{repData.reputation}/{nextRankScore} to <span className="text-primary">{repData.reputation >= 500 ? 'Immortal Oracle' : 'Iron Knight'}</span></p>
                 </div>
               </div>
 
@@ -484,7 +484,7 @@ export default function ReputationPage() {
                      <thead>
                         <tr className="border-b border-white/5 bg-white/2">
                            <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Rank</th>
-                           <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Sovereign Identity</th>
+                           <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Verified Identity</th>
                            <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Tier</th>
                            <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Reputation</th>
                            <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Commitment Score</th>
@@ -494,7 +494,7 @@ export default function ReputationPage() {
                         {[
                           { rank: "01", user: "Protocol_Knight", tier: "Halving Cycle", rep: 12450, score: "128,400" },
                           { rank: "02", user: "Genesis_Builder", tier: "Gold Sentinel", rep: 9820, score: "94,200" },
-                          { rank: "03", user: "Sovereign_Alpha", tier: "Strategic", rep: 8740, score: "82,100" },
+                          { rank: "03", user: "Vault_Alpha", tier: "Strategic", rep: 8740, score: "82,100" },
                           { rank: "04", user: "Ironclad_Vault", tier: "Halving Cycle", rep: 7120, score: "68,450" },
                           { rank: "05", user: "Stacks_Guardian", tier: "Gold Sentinel", rep: 5430, score: "52,100" },
                         ].map((row, i) => (
@@ -531,7 +531,7 @@ export default function ReputationPage() {
                <div className="flex items-center justify-between">
                   <h2 className="text-2xl font-bold text-white tracking-tight flex items-center gap-3">
                      <Gavel size={24} className="text-primary" />
-                     Sovereign Governance
+                     Independent Governance
                   </h2>
                   <div className="flex items-center gap-4">
                      <span className="text-[10px] font-black text-slate-500 uppercase">Your Voting Power:</span>
@@ -605,7 +605,7 @@ export default function ReputationPage() {
                   <div>
                     <h4 className="font-bold text-white mb-1">Reputation Slashing Risk</h4>
                     <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
-                      Breaking a commitment triggers an immediate <span className="text-red-400 font-bold">Protocol Slashing Event</span>. Your sovereign score will reset to baseline, and all unlocked perks will be revoked.
+                      Breaking a commitment triggers an immediate <span className="text-red-400 font-bold">Protocol Slashing Event</span>. Your protocol score will reset to baseline, and all unlocked perks will be revoked.
                     </p>
                   </div>
                </div>

@@ -43,7 +43,7 @@ const SECTIONS: Section[] = [
   {
     id: "fundamentals",
     title: "Protocol Fundamentals",
-    subtitle: "Bitcoin-Native Sovereign Logic",
+    subtitle: "Bitcoin-Native Independent Logic",
     icon: Rocket,
     topics: [
       { 

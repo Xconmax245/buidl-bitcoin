@@ -102,7 +102,7 @@ export default function SecurityPage() {
                 >
                   <h2 className="text-4xl md:text-6xl font-black text-white leading-[0.9] mb-8 uppercase tracking-tighter">
                     Protocol-Level <br />
-                    <span className="text-transparent bg-clip-text bg-linear-to-r from-primary via-white to-primary-dark italic">Sovereignty</span>
+                    <span className="text-transparent bg-clip-text bg-linear-to-r from-primary via-white to-primary-dark italic">Independence</span>
                   </h2>
                   <p className="text-lg md:text-xl text-slate-400 font-light leading-relaxed max-w-2xl wrap-break-word">
                     Ironclad eliminates counterparty risk by moving trust from custodians to immutable Clarity smart contracts. Every savings commitment is mathematically verifiable across Bitcoin and Stacks.
@@ -150,7 +150,7 @@ export default function SecurityPage() {
                         <div className="w-20 h-20 bg-blue-500/10 rounded-3xl flex items-center justify-center text-blue-500 mx-auto mb-6 border border-blue-500/20">
                            <Fingerprint size={40} />
                         </div>
-                        <h4 className="text-xl font-black text-white uppercase tracking-tighter italic">Sovereign Key</h4>
+                        <h4 className="text-xl font-black text-white uppercase tracking-tighter italic">Secure Key</h4>
                         <p className="text-xs text-slate-500 leading-relaxed font-light wrap-break-word">Owner-only access. No protocol upgrades can seize user collateral without consensus.</p>
                      </div>
                   </div>
@@ -291,7 +291,7 @@ export default function SecurityPage() {
                   ) : (
                     <div className="space-y-10 relative z-10">
                        <div className="space-y-3">
-                          <span className="text-[10px] font-black text-blue-500 uppercase tracking-[0.3em]">Asset Retrieval Protocol_</span>
+                           <span className="text-[10px] font-black text-blue-500 uppercase tracking-[0.3em]">Asset Retrieval Protocol_</span>
                           <h2 className="text-3xl md:text-5xl font-black text-white uppercase tracking-tighter leading-none">Emergency Recovery</h2>
                        </div>
                        <div className="space-y-6">
