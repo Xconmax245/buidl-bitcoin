@@ -18,18 +18,23 @@ export default function OnboardingPage() {
   useEffect(() => {
     const checkProfile = async () => {
       if (status === "authenticated" && session?.user) {
+        console.log("[Onboarding] Authenticated session found. Checking protocol profile...");
         try {
           const res = await fetch("/api/profile/check");
           if (res.ok) {
             const data = await res.json();
+            console.log("[Onboarding] Profile status:", data.exists ? "Complete" : "Incomplete");
             setHasProfile(data.exists);
           } else {
+            console.warn("[Onboarding] Profile check API error. Assuming new user.");
             setHasProfile(false);
           }
         } catch (err) {
-          console.error("Profile check failed", err);
+          console.error("[Onboarding] Profile check fatal error:", err);
           setHasProfile(false);
         }
+      } else if (status === "unauthenticated") {
+        console.log("[Onboarding] User is unauthenticated. Handing over to Auth layer.");
       }
     };
     checkProfile();
@@ -40,7 +45,7 @@ export default function OnboardingPage() {
     const isReady = status === "authenticated" && hasProfile === true && !walletLoading;
     
     if (isReady && (hasWallet && isUnlocked)) {
-      console.log("Onboarding complete, navigating to dashboard...");
+      console.log("[Onboarding] Protocol sequence complete. Entering Dashboard.");
       router.push("/dashboard");
     }
   }, [status, hasProfile, hasWallet, isUnlocked, walletLoading, router]);
@@ -54,7 +59,10 @@ export default function OnboardingPage() {
           className="flex flex-col items-center gap-6"
         >
           <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
-          <p className="text-primary font-mono text-xs uppercase tracking-widest animate-pulse">Syncing Protocol Status...</p>
+          <div className="text-center">
+            <p className="text-primary font-mono text-xs uppercase tracking-widest animate-pulse">Synchronizing Protocol Identity...</p>
+            <p className="text-white/20 text-[10px] uppercase tracking-tighter mt-2">Checking session status: {status}</p>
+          </div>
         </motion.div>
       </div>
     );

@@ -4,9 +4,7 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+  turbopack: {},
   webpack: (config, { isServer }) => {
     // Enable WebAssembly support for crypto libraries (tiny-secp256k1, etc.)
     config.experiments = {

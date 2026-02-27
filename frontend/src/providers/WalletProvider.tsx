@@ -14,7 +14,13 @@ let _BitcoinWallet: any = null;
 
 const getStacksSession = async () => {
   if (_userSession) return _userSession;
-  const { AppConfig, UserSession } = await import("@stacks/connect");
+  const mod = await import("@stacks/connect");
+  const AppConfig = mod.AppConfig || (mod as any).default?.AppConfig;
+  const UserSession = mod.UserSession || (mod as any).default?.UserSession;
+  if (!AppConfig || !UserSession) {
+    console.error("[Wallet] AppConfig/UserSession not found. Module keys:", Object.keys(mod));
+    return null;
+  }
   const appConfig = new AppConfig(['store_write', 'publish_data']);
   _userSession = new UserSession({ appConfig });
   return _userSession;
@@ -92,6 +98,18 @@ export function WalletProvider({ children }: { children: ReactNode }) {
 
       const session = await getStacksSession();
 
+      // Intercept and process wallet redirect payloads before checking signed-in state
+      if (session.isSignInPending()) {
+          console.log("[Wallet] Intercepted pending protocol sign-in. Processing payload...");
+          await session.handlePendingSignIn();
+          
+          if (typeof window !== 'undefined') {
+              const url = new URL(window.location.href);
+              url.searchParams.delete('authResponse');
+              window.history.replaceState({}, document.title, url.toString());
+          }
+      }
+
       // Check settings for profile and network
       const savedName = await db.settings.get('userName');
       const savedNetwork = await db.settings.get('network');
@@ -115,15 +133,27 @@ export function WalletProvider({ children }: { children: ReactNode }) {
       // check stacks
       if (session.isUserSignedIn()) {
         const userData = session.loadUserData();
-        const address = userData.profile.stxAddress.testnet || userData.profile.stxAddress.mainnet; 
+        let stxAddress = null;
+        if (userData?.profile) {
+            stxAddress = userData.profile.stxAddress?.testnet || 
+                         userData.profile.stxAddress?.mainnet || 
+                         (typeof userData.profile.stxAddress === 'string' ? userData.profile.stxAddress : null);
+        }
+
+        // Extremely crucial: If we just signed in via redirect, the AuthPage won't know because URL params aren't set
+        // So we explicitly set the localStorage flag just in case
+        if (typeof window !== 'undefined' && stxAddress) {
+            localStorage.setItem('ironclad_handshake_address', stxAddress);
+        }
+
         setState(prev => ({ 
           ...prev, 
           hasWallet: true, 
           isUnlocked: true, 
-          address: address, 
+          address: stxAddress, 
           walletType: 'stacks', 
           isLoading: false,
-          userName: savedName?.value || userData.profile.name || null,
+          userName: savedName?.value || userData.profile?.name || null,
           network,
           isInitialized: true
         }));
@@ -199,15 +229,99 @@ export function WalletProvider({ children }: { children: ReactNode }) {
   const triggerStacksConnect = async () => {
     const session = await getStacksSession();
     if (!session) return;
-    const { showConnect: sc } = await import("@stacks/connect");
-    sc({
+    
+    const mod = await import("@stacks/connect");
+    
+    // Use the `connect` function (v8 primary API).
+    // Turbopack's module proxy can make re-exported fns like `showConnect`
+    // appear in Object.keys() but not resolve as callable. `connect` is stable.
+    const connectFn = typeof mod.connect === 'function' 
+      ? mod.connect 
+      : typeof mod.showConnect === 'function' 
+        ? mod.showConnect 
+        : null;
+    
+    if (!connectFn) {
+      console.error("[Wallet] No connect function found. Available:", Object.keys(mod).join(', '));
+      return;
+    }
+    
+    connectFn({
       appDetails: {
         name: 'Ironclad',
         icon: window.location.origin + '/assets/logo.png',
       },
-      redirectTo: '/onboarding',
-      onFinish: () => {
-        window.location.reload();
+      // We explicitly avoid redirectTo here to ensure onFinish fires reliably
+      // and we can handle the protocol handover ourselves.
+      onFinish: async (data: any) => {
+        console.log("[Wallet] Protocol connection approved. Finalizing handover...");
+        try {
+          // In some v8 versions, data itself might contain the userSession or address
+          const sessionToUse = data?.userSession || session;
+          
+          let stxAddress = null;
+
+          // Attempt 1: Standard extraction
+          try {
+              const userData = sessionToUse?.isUserSignedIn() ? sessionToUse.loadUserData() : (data?.userSession?.loadUserData ? data.userSession.loadUserData() : null);
+              if (userData?.profile) {
+                stxAddress = userData.profile.stxAddress?.testnet || 
+                             userData.profile.stxAddress?.mainnet ||
+                             (typeof userData.profile.stxAddress === 'string' ? userData.profile.stxAddress : null);
+              }
+          } catch(e) {
+              console.warn("Standard extraction failed", e);
+          }
+
+          // Attempt 2: Direct from session instance if available
+          if (!stxAddress && sessionToUse && typeof sessionToUse.loadUserData === 'function') {
+              try {
+                  const ud = sessionToUse.loadUserData();
+                  stxAddress = ud?.profile?.stxAddress?.testnet || ud?.profile?.stxAddress?.mainnet || (typeof ud?.profile?.stxAddress === 'string' ? ud.profile.stxAddress : null);
+              } catch(e) {}
+          }
+
+          // Attempt 3: Dirty object parsing (e.g. Leather / Xverse varying payload shapes)
+          if (!stxAddress && data) {
+              const strData = JSON.stringify(data);
+              // regex aggressively find ST1... / SP1...
+              const match = strData.match(/(ST[0-9A-Z]{37,42}|SP[0-9A-Z]{37,42})/);
+              if (match && match[0]) {
+                  stxAddress = match[0];
+              }
+          }
+
+          // Fallback if loadUserData fails but data has the address
+          if (!stxAddress && data?.authResponse) {
+             console.log("[Wallet] Attempting address extraction from authResponse...");
+             // This is a fallback for certain wallet extension behaviors
+          }
+
+          if (stxAddress) {
+            console.log("[Wallet] Protocol address verified:", stxAddress);
+            
+            // Force save to localStorage just in case Next.js needs a beat
+            if (typeof window !== 'undefined') {
+                localStorage.setItem('ironclad_handshake_address', stxAddress);
+            }
+
+            const target = `/onboarding?auth_trigger=wallet&address=${stxAddress}&v=${Date.now()}`;
+            window.location.assign(target);
+          } else {
+            console.warn("[Wallet] Handover failed: Address missing in payload. Reloading base...", data);
+            
+            const keys = Object.keys(data || {}).join(', ');
+            alert(`Handshake completed but no address found! Payload keys: ${keys}. Please report this.`);
+
+            window.location.assign('/onboarding');
+          }
+        } catch (e) {
+          console.error("[Wallet] Handover crashed:", e);
+          window.location.assign('/onboarding');
+        }
+      },
+      onCancel: () => {
+        console.log("[Wallet] Protocol connection aborted by user.");
       },
       userSession: session,
     });

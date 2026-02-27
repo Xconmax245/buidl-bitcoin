@@ -17,7 +17,8 @@ import {
   CheckCircle,
   Languages,
   AlertCircle,
-  ImagePlus
+  ImagePlus,
+  Mail
 } from 'lucide-react';
 import { Avatar } from '@/components/ui/Avatar';
 import { useForm } from 'react-hook-form';
