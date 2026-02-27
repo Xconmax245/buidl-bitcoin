@@ -242,7 +242,7 @@ export default function Home() {
             
             <div className="flex flex-wrap justify-center gap-4">
               <Link 
-                href="https://twitter.com/ironcladfinance" 
+                href="https://x.com/codrcancode" 
                 target="_blank"
                 className="px-10 py-5 rounded-2xl bg-white text-background-dark font-black text-xs uppercase tracking-widest hover:bg-primary transition-all shadow-xl shadow-white/5 flex items-center gap-3 active:scale-95"
               >

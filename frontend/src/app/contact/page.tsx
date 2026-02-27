@@ -46,8 +46,8 @@ export default function ContactPage() {
             <h2 className="text-xl font-bold text-white mb-6">Community Channels</h2>
             <div className="grid sm:grid-cols-3 gap-4">
               {[
-                { name: "GitHub", desc: "Source code & issues", href: "https://github.com/Xconmax245/buidl-bitcoin", icon: "code" },
-                { name: "Twitter / X", desc: "Updates & discussions", href: "https://twitter.com", icon: "tag" },
+                { name: "GitHub", desc: "Source code & issues", href: "https://github.com/Xconmax245?tab=repositories", icon: "code" },
+                { name: "Twitter / X", desc: "Updates & discussions", href: "https://x.com/codrcancode", icon: "tag" },
                 { name: "Discord", desc: "Community chat", href: "https://discord.gg", icon: "forum" },
               ].map((channel, i) => (
                 <a key={i} href={channel.href} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-2 p-4 rounded-xl bg-white/5 hover:bg-primary/10 hover:border-primary/20 border border-white/5 transition-all text-center">

@@ -50,7 +50,7 @@ export function Footer() {
             </p>
             <div className="flex items-center gap-4 mt-6">
               <a
-                href="https://github.com/Xconmax245/buidl-bitcoin"
+                href="https://github.com/Xconmax245?tab=repositories"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-500 hover:text-primary transition-colors"
@@ -60,7 +60,7 @@ export function Footer() {
                 </svg>
               </a>
               <a
-                href="https://twitter.com"
+                href="https://x.com/codrcancode"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-500 hover:text-primary transition-colors"
